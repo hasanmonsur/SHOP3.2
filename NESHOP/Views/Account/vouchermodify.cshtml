@@ -1,0 +1,333 @@
+@model NeSHOP.Models.AcTranPaymentModel
+
+@section Scripts{
+    <script type="text/javascript">
+
+        $(function () {
+            $("#TranNo").focus();
+            //$("#PaymentDate").datepicker({ dateFormat: "yy-mm-dd" }).val();
+            //$("#PaymentDate").datepicker({ dateFormat: "yy-mm-dd" }).val();
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                startDate: '-3y',
+                Default: true
+            });
+
+            $("#VendorCode").change(function () {
+                var ordType = $("#CustomerCode").val();
+                if (ordType == '') alert("CustomerCode does not empty");
+                else {
+                    $("#InvoiceNo").focus();
+                }
+                return false;
+
+            });
+
+            $("#TranNo").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#TranNo").val();
+                    if (ordType == '') {
+                        alert("TranNo does not empty");
+                        $("#InvoiceNo").focus();
+                    }
+                    else {
+                        var url = '@Url.Content("~/")' + "Account/JfuncTransactionPaymentInfo";
+                        var ddlsource = "#TranNo";
+                        $("#InvoiceNo").val('');
+                        $("#MoneyReceptNo").val('');
+                        $("#PaymentDate").val('');
+                        $("#PaymentBy").val('');
+                        $("#Amount").val('');
+                        $("#Payment").val('');
+                        $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                            //$("#VendorCode").empty();
+                            $("#VendorCode").append("<option value='" + data.vendorCode + "' selected='selected' >" + data.vendor + "</option>");
+                            $("#MoneyReceptNo").val(data.moneyReceptNo);
+                            $("#PaymentDate").val(data.tranDatetemp);
+                            $("#PaymentBy").val(data.paymentBy);
+                            $("#Amount").val(data.paymentAmount);
+                            //$("#PaymentType").empty();
+                            $("#PaymentType").append("<option value='" + data.paymentType + "' selected='selected'>" + data.payment + "</option>");
+                            $("#InvoiceNo").val(data.invoiceNo);
+                            $("#ChequeNumber").val(data.chequeNumber);
+                            $("#ChequeDate").val(data.chequeDate);
+                            $("#ChequeDetails").append("<option value='" + data.chequeDetails + "' selected='selected'>" + data.bankName + "</option>");
+
+                        });
+                        $("#MoneyReceptNo").focus();
+                    }
+                    return false;
+                }
+
+            });
+
+            $("#MoneyReceptNo").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#MoneyReceptNo").val();
+                    if (ordType == '') alert("Money Recept No does not empty");
+                    else {
+                        $("#PaymentDate").focus();
+                    }
+                    return false;
+                }
+            });
+
+            $("#PaymentDate").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#PaymentDate").val();
+                    if (ordType == '') alert("PaymentDate does not empty");
+                    else {
+                        $("#PaymentBy").focus();
+                    }
+                    return false;
+                }
+            });
+
+            $("#PaymentBy").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#PaymentBy").val();
+                    if (ordType == '') alert("PaymentBy does not empty");
+                    else {
+                        $("#Amount").val('');
+                        $("#Amount").focus();
+                    }
+                    return false;
+                }
+            });
+
+            $("#Amount").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#Amount").val();
+                    if (ordType == '') {
+                        $("#Amount").focus();
+                        alert("Amount does not empty");
+                    }
+                    else {
+                        $("#PaymentType").focus();
+                    }
+                    return false;
+                }
+            });
+
+            $("#PaymentType").change(function () {
+                var pType = $("#PaymentType").val();
+                //alert(pType);
+                if (pType == '1001')
+                    $("#TranStatus").focus();
+                else if (pType == '1002')
+                    $("#ChequeNumber").focus();
+                else
+                    $("#ChequeDate").focus();
+
+                return false;
+            });
+
+            $("#PaymentType").keypress(function (event) {
+                if (event.which == 13) {
+                    var pType = $("#PaymentType").val();
+                    //alert(pType);
+                    if (pType == '1001') {
+                        $("#ChequeNumber").val('0');
+                        $("#ChequeDetails").val('None');
+                        $("#TranStatus").focus();
+                    }
+                    else if (pType == '1002')
+                        $("#ChequeNumber").focus();
+                    else {
+                        $("#ChequeNumber").val('0');
+                        $("#ChequeDate").focus();
+                    }
+
+                    return false;
+                }
+            });
+
+            $("#ChequeNumber").keypress(function (event) {
+                if (event.which == 13) {
+                    $("#ChequeDate").focus();
+
+                    return false;
+                }
+
+            });
+            $("#ChequeDate").keypress(function () {
+                if (event.which == 13) {
+                    $("#ChequeDetails").focus();
+
+                    return false;
+                }
+                //return false;
+            });
+            $("#ChequeDetails").keypress(function (event) {
+                if (event.which == 13) {
+                    $("#TranStatus").focus();
+                    return false;
+                }
+
+            });
+
+            $("#TranStatus").keypress(function (event) {
+                if (event.which == 13) {
+                    $("#btn[value=Update]").focus();
+                    return false;
+                }
+            });
+
+
+            //-------------------------------------------------------
+            $("#btn[value=Update]").click(function (event) {
+                var btnValue = $("#btn[value=Update]").val(); // "Save";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+
+                    return true;
+                }
+                else return false;
+
+            });
+
+            $("#btn[value=Cancel]").click(function (event) {
+                var btnValue = $("#btn[value=Cancel]").val(); // "Save";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+
+                    return true;
+                }
+                else return false;
+
+            });
+
+            $("#btn[value=Clear]").click(function (event) {
+                var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    return true;
+                }
+                else return false;
+
+            });
+
+            $("#btn[value=Exit]").click(function (event) {
+                var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    return true;
+                }
+                else return false;
+
+            });
+
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Operation Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Operation Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Operation Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            } 
+
+        });
+
+    </script> 
+}
+
+
+
+<form action="/Account/vouchermodify" method="post"> 
+    <div class="row container padding-top padding-bottom" style="width:95%">
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>Payment Bill Modify</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row pt-3">
+                    <div class="col-6">
+                         <div class="row mb-1">
+                            <div class="col-4"><label asp-for="TranNo" class="control-label"></label></div>
+                            <div class="col-6">
+                                <input type="text" asp-for="TranNo" class="form-control w-100" />
+                                <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+                            </div>
+                            <div class="col-2">
+                                <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Search">Search</button>
+                            </div>
+                        </div>
+                        
+                        <hr/>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="InvoiceNo" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="InvoiceNo" class="form-select form-select-lg w-50" asp-items="@(new SelectList(Model.InvoiceList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="VendorCode" class="control-label"></label></div>
+                            <div class="col-8"> <select asp-for="VendorCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.VenList, "Value", "Text"))"> </select> </div>
+                        </div>                        
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ChequeNumber" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="ChequeNumber" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ChequeDate" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="ChequeDate" class="datepicker form-control w-50" /> </div>
+                        </div>
+                            <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ChequeDetails" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="ChequeDetails" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.BankList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>          
+                        
+                    </div>
+                    <div class="col-6">
+                        <div class="row pt-4 mb-1">                            
+                        </div>
+                        <div class="row pt-4 mb-1">
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="MoneyReceptNo" class="control-label"></label></div>
+                            <div class="col-8">
+                                <input type="text" asp-for="MoneyReceptNo" class="form-control w-50" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="PaymentDate" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="PaymentDate" class="datepicker form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="PaymentBy" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="PaymentBy" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.EmpList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="Amount" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="Amount" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="PaymentType" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="PaymentType" class="form-select form-select-lg w-50" asp-items="@(new SelectList(Model.PaymentTypeList, "Value", "Text"))"> </select>
+                            </div>
+                        </div> 
+                        <div class="row mb-2">
+                            <div class="col-12 btn-group p-3" role="group">
+                                <button type="submit" class="btn btn-primary btn-sm" id="btn" name="btn" value="Search">Search</button>
+                                <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Update">Update</button>
+                                <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                                <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                       
+            </div>
+        </div>
+    </div>
+
+ </form>
+

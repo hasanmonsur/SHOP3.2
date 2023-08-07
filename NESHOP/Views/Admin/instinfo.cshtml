@@ -1,0 +1,243 @@
+@model NeSHOP.Models.TblAppinfoModel
+
+@{
+    ViewData["Title"] = "Organization Info";
+}
+
+@section Scripts{
+<script type="text/javascript">
+
+    $(function () {
+        $("#Instname").focus();
+        $("#Instcode").attr("Visible", false);
+
+        $("#chkOpType").change(function (event) {
+            var okCheck = $("#chkOpType");
+            if (okCheck.is(":checked")) {
+                $("#Instcode").attr("Visible", true);
+                $("#Instcode").focus();
+            }
+            else {
+                $("#Instcode").attr("readonly", true);
+                $("#Instname").focus();
+            }
+            return false;
+        });
+
+
+        $("#Instcode").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#btn[value=Search]").focus();
+                return false;
+            }
+        });
+
+        $("#Instname").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#Instaddress").focus();
+                return false;
+            }
+        });
+
+        $("#Instaddress").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#Instemail").focus();
+                return false;
+            }
+        });
+
+        $("#Instemail").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#Intphone").focus();
+                return false;
+            }
+        });
+
+        $("#Intphone").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#Instfax").focus();
+                return false;
+            }
+        });
+
+        $("#Instfax").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#Website").focus();
+                return false;
+            }
+        });
+
+
+        $("#Website").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#Instcatagorycode").focus();
+                return false;
+            }
+        });
+
+        $("#Instcatagorycode").keypress(function (event) {
+            //if (event.which == 13 || event.which == 9) {
+            $("#ShiftNo").focus();
+            return false;
+            //}
+        });
+
+
+
+        $("#ShiftNo").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                var okCheck = $("#chkOpType");
+                if (okCheck.is(":checked")) {
+                    $("#btn[value=Update]").focus();
+                }
+                else {
+                    $("#btn[value=Save]").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#btn[value=Save]").click(function (event) {
+            var btnValue = $("#btn[value=Save]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Update]").click(function (event) {
+            var btnValue = $("#btn[value=Update]").val(); // "Update";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Search]").click(function (event) {
+            var btnValue = $("#btn[value=Search]").val(); // "Search";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Clear]").click(function (event) {
+            var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Exit]").click(function (event) {
+            var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Operation Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Operation Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Operation Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+    });
+</script> 
+}
+
+<form action="/Admin/instinfo" method="post"> 
+    <div class="row container padding-top padding-bottom" style="width:95%">
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>Manage Organization Information</h4> 
+            </div>
+            <div class="panel-body">
+                        <div class="row p-1 pt-3 mb-1">
+                            <div class="col-md-4"><label asp-for="Instcode" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <select asp-for="Instcode" class="form-select form-select-lg w-50" asp-items="@(new SelectList(Model.InstCodeList, "Value", "Text"))"> </select>
+                                <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+                            </div>
+                        </div> 
+
+                        <div class="row p-1 mb-2">
+                            <div class="col-md-2"><label asp-for="Instname" class="control-label"></label></div>
+                            <div class="col-md-4">
+                                <input type="text" asp-for="Instname" class="form-control w-50 rounded-1" />
+                            </div>
+
+                            <div class="col-md-2"><label asp-for="Instaddress" class="control-label"></label></div>
+                            <div class="col-md-4">
+                                <input type="text" asp-for="Instaddress" class="form-control w-50 rounded-1" />
+                            </div>
+                        </div>          
+                        <div class="row p-1 mb-2">
+                            <div class="col-md-2"><label asp-for="Instemail" class="control-label"></label></div>
+                            <div class="col-md-4">
+                                <input type="text" asp-for="Instemail" class="form-control w-50 rounded-1" />
+                            </div>
+
+                            <div class="col-md-2"><label asp-for="Intphone" class="control-label"></label></div>
+                            <div class="col-md-4">
+                                <input type="text" asp-for="Intphone" class="form-control w-50 rounded-1" />
+                            </div>
+                        </div>      
+
+                        <div class="row p-1 mb-2">
+                            <div class="col-md-2"><label asp-for="Instfax" class="control-label"></label></div>
+                            <div class="col-md-4">
+                                <input type="text" asp-for="Instfax" class="form-control w-50 rounded-1" />
+                            </div>
+
+                            <div class="col-md-2"><label asp-for="Website" class="control-label"></label></div>
+                            <div class="col-md-4">
+                                <input type="text" asp-for="Website" class="form-control w-50 rounded-1" />
+                            </div>
+                        </div>      
+                        <div class="row p-1 mb-2">
+                            <div class="col-md-2"><label asp-for="Instcatagorycode" class="control-label"></label></div>
+                            <div class="col-md-4">
+                                <select asp-for="Instcode" class="form-select form-select-lg w-50" asp-items="@(new SelectList(Model.InstcatagorycodeList, "Value", "Text"))"> </select>
+                            </div>
+
+                            <div class="col-md-2"><label asp-for="ShiftNo" class="control-label"></label></div>
+                            <div class="col-md-4">
+                                 <select asp-for="ShiftNo" class="form-select form-select-lg w-50" asp-items="@(new SelectList(Model.ShiftNoList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>      
+
+                        <div class="row mb-2">
+                            <div class="col-4"></div>
+                            <div class="col-8 btn-group p-3" role="group">
+                                <button type="submit" class="btn btn-primary btn-sm" id="btn" name="btn" value="Save">Save</button>
+                                <button type="submit" class="btn btn-warning btn-sm" id="btn" name="btn" value="Search">Search</button>
+                                <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Update">Update</button>
+                                <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                                <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                            </div>
+                        </div>
+                </div> 
+
+            </div>
+        </div>
+    </div>
+</form>
+
+

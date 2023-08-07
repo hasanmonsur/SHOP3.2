@@ -1,0 +1,117 @@
+@model NeSHOP.Models.ReportsModel
+
+@{
+    ViewData["Title"] = "Sales Report";
+}
+
+
+@section Scripts{
+    <script type="text/javascript">
+
+    $(function () {
+
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                startDate: '-3y',
+                Default: true
+            });
+
+
+        // $("#ReportType:checked").val()=1;
+
+        //$("#FromDate").datepicker({ dateFormat: "yy-mm-dd" }).val();
+       //$("#ToDate").datepicker({ dateFormat: "yy-mm-dd" }).val();
+
+        $("#FromDate").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#ToDate").focus();
+                return false;
+            }
+        });
+        $("#ToDate").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#btn[value=Preview]").focus();
+                return false;
+            }
+        });
+
+        $("#btn[value=Preview]").click(function (event) {
+            var btnValue = $("#btn[value=Preview]").val(); // "Save";
+            var rType = $("#ReportType:checked").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                var qString = rType + '-' + $("#FromDate").val() + '-' + $("#ToDate").val();
+                // alert(rType);
+                switch (rType) {
+                    case '1':
+                        //window.showModalDialog('/Reports/Rpt_ReservationReport/' + qString, "wndPopUp", 'width=1000,height=1000');
+                        window.open('/Reports/Rpt_RptDailyBuyTran/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+
+                        break;
+                    case '2':
+                        window.open('/Reports/Rpt_RptDailySalesTran/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+                        break;
+                    case '3':
+                        window.open('/Reports/Rpt_RptDailyProdInTran/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+                        break;
+                    case '4':
+                        window.open('/Reports/Rpt_RptDailyProdOutTran/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+                        break;
+                    default:
+                        alert('Select Report Type first....');
+                        break;
+                }
+                return false;
+            }
+            else return false;
+
+        });
+
+    });	    	    
+	</script> 
+}
+
+
+<form action="/Transaction/invoicesearch" method="post">
+    <div class="row container padding-top padding-bottom">
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>Daily Transactional Report</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row pt-3 mb-1">
+                    <div class="col-md-4"><label class="control-label">Transaction Report</label></div>
+                    <div class="col-md-8">
+                        <input type="radio" asp-for="ReportType" value="1" />Buy Report
+                        <input type="radio" asp-for="ReportType" value="2" />Sales Report
+                        <input type="radio" asp-for="ReportType" value="3" />Production In
+                        <input type="radio" asp-for="ReportType" value="4" />Production Out
+                        <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label asp-for="FromDate" class="control-label"></label></div>
+                    <div class="col-8"><input type="text" asp-for="FromDate" class="datepicker form-control w-50" /> </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label asp-for="ToDate" class="control-label"></label></div>
+                    <div class="col-8"><input type="text" asp-for="ToDate" class="datepicker form-control w-50" /> </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"></div>
+                    <div class="col-6 btn-group p-3" role="group">
+                        @*<button type="submit" class="btn btn-primary btn-sm" id="btn" name="btn" value="Search">Search</button>*@
+                        <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Preview">Preview</button>
+                        @* <button type="submit" class="btn btn-warning btn-sm" id="btn" name="btn" value="PreviewReturn">Sales Return</button>*@
+                        <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                        <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                    </div>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+

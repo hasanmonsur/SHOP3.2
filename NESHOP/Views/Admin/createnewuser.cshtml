@@ -1,0 +1,193 @@
+@model NeSHOP.Models.RegisterModel
+
+@{
+    ViewData["Title"] = "Manage User";
+}
+
+@section Scripts{
+<script type="text/javascript">
+
+    $(function () {
+        $("#UserId").focus();
+
+        $("#UserId").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                if ($("#UserId").val() == "") {
+                    alert('User ID Does not Empty');
+                    $("#UserId").focus();
+                }
+                else {
+                    $("#UserPassword").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#UserPassword").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                if ($("#UserPassword").val() == '') {
+                    alert('Password Does not Empty');
+                    $("#UserPassword").focus();
+                }
+                else {
+                    $("#ConfirmPassword").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#ConfirmPassword").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                if ($("#ConfirmPassword").val() == '' || $("#ConfirmPassword").val() != $("#UserPassword").val()) {
+                    alert('Confirm Password is not Valid with User Password');
+                    $("#ConfirmPassword").focus();
+                }
+                else {
+                    $("#EmpId").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#EmpId").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                if ($("#EmpId").val() == '0000') {
+                    alert('Employee Does not Empty');
+                    $("#EmpId").focus();
+                }
+                else {
+                    $("#IsActive").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#IsActive").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#btn[value=Save]").focus();
+                return false;
+            }
+        });
+
+
+        $("#btn[value=Save]").click(function (event) {
+            var btnValue = $("#btn[value=Save]").val();// "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Update]").click(function (event) {
+            var btnValue = $("#btn[value=Update]").val(); // "Update";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Search]").click(function (event) {
+            var btnValue = $("#btn[value=Search]").val(); // "Search";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Clear]").click(function (event) {
+            var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Exit]").click(function (event) {
+            var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Operation Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Operation Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Operation Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+    });
+</script> 
+}
+
+
+<form action="/Admin/createnewuser" method="post"> 
+    <div class="row container padding-top padding-bottom" style="width:95%">
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>Manage User</h4> 
+            </div>
+            <div class="panel-body">
+                        <div class="row p-1 pt-3 mb-1">
+                            <div class="col-md-4"><label asp-for="UserId" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <input type="text" asp-for="UserId" class="form-control w-50 rounded-1" />
+
+                                <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+                            </div>
+                        </div> 
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="EmpId" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="EmpId" class="form-select form-select-lg w-50" asp-items="@(new SelectList(Model.EmpIdList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="UserPassword" class="control-label"></label></div>
+                            <div class="col-8">
+                                <input type="text" asp-for="UserPassword" class="form-control w-50" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ConfirmPassword" class="control-label"></label></div>
+                            <div class="col-8">
+                                <input type="text" asp-for="ConfirmPassword" class="form-control w-50" />
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="IsActive" class="control-label"></label></div>
+                            <div class="col-8"><input type="checkbox" asp-for="IsActive" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-2"></div>
+                            <div class="col-8 btn-group p-3" role="group">
+                                <button type="submit" class="btn btn-primary btn-sm" id="btn" name="btn" value="Save">Save</button>
+                                <button type="submit" class="btn btn-warning btn-sm" id="btn" name="btn" value="Search">Search</button>
+                                <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Update">Update</button>
+                                <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                                <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                            </div>
+                        </div>
+                </div> 
+
+            </div>
+        </div>
+    </div>
+</form>

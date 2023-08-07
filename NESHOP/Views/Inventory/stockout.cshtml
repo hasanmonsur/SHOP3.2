@@ -1,0 +1,263 @@
+@model NeSHOP.Models.IteamModels
+
+@section Scripts{
+    <script type="text/javascript">
+
+    $(function () {
+        $("#CatagoryCode").focus();
+        $("#CatagoryCode").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#CatagoryCode").val();
+                if (ordType == '') alert("CatagoryCode does not empty");
+                else {
+                    $("#VendorCode").focus();
+                }
+                return false;
+            }
+
+        });
+
+        $("#VendorCode").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#VendorCode").val();
+                if (ordType == '') alert("CatagoryCode does not empty");
+                else {
+
+                    //$("#IteamCode").val(IteamCode);
+                    $("#IteamDesc").focus();
+                }
+
+                return false;
+            }
+
+        });
+
+        $("#IteamDesc").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#IteamDesc").val();
+                if (ordType == '') alert("IteamDesc does not empty");
+                else {
+                    $("#CostPrice").val("");
+                    $("#CostPrice").focus();
+                }
+                return false;
+            }
+
+        });
+
+        $("#CostPrice").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#CostPrice").val();
+                if (ordType == '') alert("IteamType does not empty");
+                else {
+
+                    $("#IteamSLNo").focus();
+                }
+                return false;
+            }
+
+        });
+
+
+        $("#IteamSLNo").keypress(function (event) {
+            if (event.which == 13) {
+                $("#btn[value=Save]").focus();
+                return false;
+            }
+
+        });
+
+        $("#IteamCode").keypress(function (event) {
+            if (event.which == 13) {
+
+                $("#btn[value=Search]").click();
+
+                return false;
+
+            }
+
+        });
+
+        $("#btn[value=Save]").click(function (event) {
+            var btnValue = $("#btn[value=Save]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Clear]").click(function (event) {
+            var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Exit]").click(function (event) {
+            var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Operation Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Operation Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Operation Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+    });        
+        
+ </script> 
+}
+
+<form action="/Inventory/Stockout" method="post">
+
+<fieldset id="EntryFildSet">
+   <legend>Stock Out (Inventory)</legend>    
+    <table style="width: 100%; border-top-color:transparent;">
+    <tr>    
+    <td>
+    <fieldset id="Fieldset1">
+     <table style="width: 100%; table-layout:auto; ">          
+          <tr>
+            <td>
+                @(Html.LabelFor(m => m.IteamCode))
+      
+            </td>
+            <td>
+                     @(Html.TextBoxFor(m => m.IteamCode))
+            </td>
+           
+        </tr>
+        <tr>
+            <td>
+                @(Html.LabelFor(m => m.CatagoryCode))
+      
+            </td>
+            <td>
+                     @(Html.DropDownListFor(m => m.CatagoryCode, Model.CatagoryList))
+            </td>
+           
+        </tr>
+        <tr>
+            <td>
+               
+                @(Html.LabelFor(m => m.VendorCode))
+                             
+            </td>
+            <td>
+             
+                    @(Html.DropDownListFor(m => m.VendorCode, Model.VendorList))
+               
+            </td>
+           
+        </tr>
+        <tr>
+            <td>
+               
+                @(Html.LabelFor(m => m.IteamDesc))
+                    
+            </td>
+            <td>
+                   @(Html.TextBoxFor(m => m.IteamDesc, new { style = "width:600px;" }))
+                                  
+            </td>           
+        </tr>
+        <tr>
+            <td>
+                @(Html.LabelFor(m => m.CostPrice))
+            
+            </td>
+            <td>
+                    @(Html.TextBoxFor(m => m.CostPrice))
+               
+            </td>
+           
+        </tr>
+        <tr>
+            <td>
+                @(Html.LabelFor(m => m.IteamSLNo))
+            
+            </td>
+            <td>
+                    @(Html.TextBoxFor(m => m.IteamSLNo, new { style = "width:600px;" })) ****Use ( | ) for Separator
+               
+            </td>
+           
+        </tr>
+        
+        <tr>
+            <td>
+                &nbsp;         
+            </td>
+            <td colspan="1">
+                    <button type="submit" id="btn" name="btn" value="Save">Save</button>
+                    <button type="submit" id="btn" name="btn" value="Update">Update</button> 
+                    <button type="submit" id="btn" name="btn" value="Search">Search</button> 
+                    <button type="submit" id="btn" name="btn" value="Clear">Clear</button>
+                    <button type="submit" id="btn" name="btn" value="Exit">Exit</button>
+            </td>            
+        </tr> 
+                
+      </table>
+      </fieldset>
+    </td>
+    </tr>
+        <tr>
+        <td>
+        <fieldset id="Fieldset2">
+       <table>
+       <tr>
+       <td> 
+       <table style=" width:1200px; border:solid 1px;">
+       <tr>
+       <td>Code</td>
+       <td>Catagory</td>
+       <td>Vendor</td>
+       <td>Product</td>
+       <td>SL#</td>
+       <td>Price</td>
+       </tr>
+       @if (Model.IteamList != null)
+            {
+                for (var i = 0; i < Model.IteamList.Count; i++)
+                {
+            <tr>
+               <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].IteamCode))</td>
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].CatagoryName))</td>
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].VendorName))</td>
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].IteamDesc))</td>  
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].IteamSLNo))</td> 
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].CostPrice))</td> 
+             </tr>                 
+            }
+                    
+            }
+
+
+       </table>
+       </td>
+       </tr>
+       </table>        
+        </fieldset>
+        </td>
+        </tr>
+    </table>   
+</fieldset> 
+
+      
+</form>

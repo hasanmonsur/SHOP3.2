@@ -1,0 +1,530 @@
+@model NeSHOP.Models.ChallanModels
+
+@{
+    ViewData["Title"] = "Challan Entry";
+}
+
+@section Scripts{
+<script type="text/javascript">
+
+    $(function () {
+        $("#Barcode").focus();
+        //$("#ChallanDate").datepicker({ dateFormat: "yy-mm-dd" }).val();
+        $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                startDate: '-3d',
+                Default: true
+        });
+
+            $("#btn[value=Add]").prop("disabled", true);
+
+        $("#ChallanNo").attr('ReadOnly', true);
+        $("#ChallanDate").attr('ReadOnly', true);
+        $("#CustomerCode").change(function () {
+            var ordType = $("#CustomerCode").val();
+            if (ordType == '') alert("CustomerCode does not empty");
+            else {
+                $("#PONo").focus();
+            }
+            return false;
+
+        });
+
+        $("#PONo").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#PONo").val();
+                if (ordType == '') {
+                    alert("PONo does not empty");
+                    $("#ChallanRemarks").focus();
+                }
+                else {
+                    $("#ChallanRemarks").focus();
+                }
+                return false;
+            }
+
+        });
+        $("#ChallanRemarks").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#ChallanRemarks").val();
+                if (ordType == '') {
+                    alert("ChallanRemarks does not empty");
+                    $("#BrandCode").focus();
+                }
+                else {
+                    $("#BrandCode").focus();
+                }
+                return false;
+            }
+        });
+
+
+        $("#BrandCode").change(function () {
+                var url = '@Url.Content("~/")' + "Inventory/JfuncModelList";
+            var ddlsource = "#BrandCode";
+            var ddltarget = "#ModelCode";
+            $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                $(ddltarget).empty();
+                $.each(data, function (index, optionData) {
+                    $(ddltarget).append("<option value='" + optionData.value + "'>" + optionData.text + "</option>");
+                });
+            });
+            $("#ModelCode").focus();
+            return false;
+        });
+
+        $("#ModelCode").change(function () {
+                var url = '@Url.Content("~/")' + "Transaction/JfuncModelDesc";
+            var ddlsource = "#ModelCode";
+            var ddltarget = "#ModelDesc";
+            $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                $(ddltarget).empty();
+                $(ddltarget).val(data[0].toString());
+            });
+            $("#ModelDesc").focus();
+            return false;
+
+        });
+
+
+         $("#Barcode").keypress(function () {
+
+            var barTxt=$("#Barcode").val();
+            if (barTxt.length==5 || event.which == 13 || event.key == "Enter") {
+                    var barcode = barTxt.concat("", event.key);
+                    $("#Barcode").val(barcode);
+
+                    var url = '@Url.Content("~/")' + "Transaction/JfuncModelDesc";
+                    var ddlsource = "#ModelCodeTxt";
+                    var ddltarget = "#ModelDesc";
+                    $.getJSON(url, { Sel_StateName: barcode }, function (data) {
+                        $(ddltarget).empty();
+                        $(ddltarget).val(data[0].toString());
+                        $(ddlsource).empty();
+                        $(ddlsource).val(barcode);
+                    });
+
+                    $("#ItemSlNo").focus();
+
+
+                    return false;
+            }
+
+        });
+
+
+        $("#ModelDesc").keypress(function (event) {
+            if (event.which == 13) {
+               
+               $("#ItemSlNo").focus();
+
+                return false;
+            }
+
+        });
+
+            $("#ItemSlNo").keypress(function (event) {
+                    if (event.which == 13) {
+                        $("#Quantity").val('');
+                        $("#Quantity").focus();
+
+                        return false;
+                    }
+
+            });
+
+
+            $("#Quantity").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#Quantity").val();
+                    if (ordType == '') {
+                        alert("Quantity does not empty");
+                        $("#Quantity").focus();
+                    }
+                    else {
+                            var url = '@Url.Content("~/")' + "Transaction/JfuncModelSlNo";
+                        var ddlsource = "#Quantity";
+                        var ddlsource2 = "#ModelCode";
+
+                        var modelCode=$(ddlsource2).val();
+                        if ($(ddlsource2).val() == '' || $(ddlsource2).val() == null) modelCode = $("#ModelCodeTxt").val();
+
+                        var ddltarget = "#Quatnity";
+                        $.getJSON(url, { Sel_StateName: $(ddlsource).val() + '+' + modelCode }, function (data) {
+                            $(ddltarget).empty();
+                            $(ddltarget).val(data.toString());
+                            //alert(data.toString());
+                            if (data.toString() != '0') {
+                                //$("#IteamSLNo2").val('');
+                                $("#btn[value=Add]").prop("disabled", false);
+                                $("#btn[value=Add]").focus();
+                            }
+                            else {
+                                alert("Stock is not avilable..........");
+                                $("#Quantity").focus();
+                            }
+
+                        });
+
+                    }
+                    return false;
+                }
+           });
+
+
+        $("#ChallanNo").change(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#ChallanNo").val();
+                if (ordType == '') alert("Challan Number does not empty");
+
+                return false;
+            }
+
+        });
+
+        //--------------------------------------------------------
+        $("#tblList td").click(function (e) {
+            var currentCellText = $(this).text();
+            var RowIndex = $(this).parent().parent().children().index($(this).parent());
+            var ColIndex = $(this).parent().children().index($(this));
+            var qString = currentCellText;
+
+            if (ColIndex == 0 && RowIndex >= 0 && currentCellText != '') {
+                $("#IteamCode").val(qString);
+                $("#btn[value=Search]").click();
+
+            }
+
+            return false;
+        });
+
+
+        //-------------------------------------------------------
+
+        $("#btn[value=Add]").click(function (event) {
+            var btnValue = $("#btn[value=Add]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                 $("#btn[value=Add]").prop("disabled", true);
+
+                if (feild_validity()) {
+                    var url = '@Url.Content("~/")' + "Transaction/JsonFuncChallanAdd";
+                    var params = {};
+
+                    var modelCode = $("#ModelCode").val();
+                        if ($("#ModelCode").val() == '' || $("#ModelCode").val() == null) modelCode = $("#ModelCodeTxt").val();
+
+                    var brandCode=$("#BrandCode").val();
+                        if ($("#BrandCode").val() == '' || $("#BrandCode").val() == null) brandCode = modelCode.substring(0,3);
+
+                       // alert(brandCode);
+
+                        var qString = brandCode + "+" + modelCode + "+" + $("#ModelDesc").val() + "+" + $("#Quantity").val() + "+" + $("#ItemSlNo").val();
+                    
+                        params.ids = qString.toString();
+                        //alert(qString);
+
+                    $.getJSON(url, params, function (data) {
+                            $("#tblList").append("<tr id='tr" + data.slNo + "'><td>" + data.slNo + "</td><td>" + data.vendorName + "</td><td>" + data.modelName + "</td><td>" + data.iteamDesc + " SL#: " + data.iteamSLNo + "</td><td>" + data.quantity + "</td><td><a class='delete' href='#' >Delete-" + data.slNo + "</a></td></tr>");
+                    });
+                    //$("#ModelCode").empty();
+                    $("#ModelCode").focus();
+                    $("#Quantity").val('');
+                    $("#ItemSlNo").val('');
+                }
+                return false;
+
+            }
+            else {
+                $("#Quantity").focus();
+                return false;
+            }
+
+        });
+
+
+        $("#tblList").delegate('a.delete', 'click', function (e) {
+
+                var url = '@Url.Content("~/")' + "Transaction/JsonFuncChallanDelete";
+            var params = {};
+            var qString = $(this).text();
+            params.ids = qString.toString();
+            alert(params.ids);
+            $.getJSON(url, params, function (data) {
+                smSg = data.toString();
+                alert(smSg);
+            });
+            e.preventDefault();
+            $(this).closest('tr').remove();
+        });
+
+        $("#btn[value=Save]").click(function (event) {
+            var btnValue = $("#btn[value=Save]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Delete]").click(function (event) {
+            var btnValue = $("#btn[value=Delete]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+
+                var ordType = $("#ChallanNo").val();
+                if (ordType == '') {
+                    alert('Challan number does not empty.....');
+                    $("#ChallanNo").focus();
+                    return false;
+                }
+                else
+                    return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Clear]").click(function (event) {
+            var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Exit]").click(function (event) {
+            var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        function feild_validity() {
+
+            var verCustomerCode = $("#CustomerCode").val();
+            var verPONo = $("#PONo").val();
+            var verChallanRemarks = $("#ChallanRemarks").val();
+            var verBrandCode = $("#BrandCode").val();
+            var verModelCode = $("#ModelCode").val();
+            var verModelDesc = $("#ModelDesc").val();
+            var verQuantity = $("#Quantity").val();
+            //alert(verCustomerCode);
+            if (verCustomerCode == '') {
+                alert('Customer not selected...');
+                $("#CustomerCode").focus();
+                return false;
+            }
+            else if (verPONo == '') {
+                alert('verPONo not blank must entry (0)...');
+                $("#PONo").focus();
+                return false;
+            }
+            else if (verChallanRemarks == '') {
+                alert('Remarks  not Balank , Please entry something...');
+                $("#ChallanRemarks").focus();
+                return false;
+            }
+            //else if (verBrandCode == '') {
+            //    alert('Band not selected...');
+            //    $("#BrandCode").focus();
+            //    return false;
+            //}
+            //else if (verModelCode == '') {
+            //    alert('Model not selected...');
+            //    $("#ModelCode").focus();
+            //    return false;
+            //}
+            else if (verModelDesc == '') {
+                alert('Model Description does not empty...');
+                $("#ModelDesc").focus();
+                return false;
+            }
+            else if (verQuantity == '') {
+                alert('Quantity does not empty...');
+                $("#Quantity").focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+           }
+
+            //alert($("#SuccessStat").val());
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Operation Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+
+                var qString = '2-' + $("#ChallanTranno").val();
+               // alert(qString);
+                window.open('/Reports/Rpt_ChallanReport/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Operation Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Operation Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else{
+                //alert('No Data ');
+            }
+
+    });       
+        
+</script> 
+}
+
+
+<form action="/Transaction/challanentry" method="post">
+    <div class="row container padding-top padding-bottom" style="width:95%">
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>Challan Entry</h4> 
+            </div>
+            <div class="panel-body">
+                <div class="row pt-3 mb-1">
+                    <div class="col-6">
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ChallanDate" class="control-label"></label></div>
+                            <div class="col-8">
+                                <input type="text" asp-for="ChallanDate" class="datepicker form-control" />
+
+                                <input type="hidden" asp-for="ChallanNo" class="form-control w-50 rounded-1" />
+
+                                <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+                                <input type="hidden" id="ChallanTranno" value="@ViewData["ChallanTranno"]" />
+
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="CustomerCode" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="CustomerCode" class="form-select form-select-lg" asp-items="@(new SelectList(Model.CustomerList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="PONo" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="PONo" class="form-control" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ChallanRemarks" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="ChallanRemarks" class="form-control" /> </div>
+                        </div>
+
+                        <div class="row mb-1 p-2 bg-info">
+                            <div class="col-4"><label asp-for="Barcode" class="control-label"></label></div>
+                            <div class="col-8">
+                                <input type="text" asp-for="Barcode" class="form-control w-100" />
+                                <input type="hidden" asp-for="ModelCodeTxt" class="form-control w-100" />
+                            </div>                            
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-6">
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="BrandCode" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="BrandCode" class="form-select form-select-lg" asp-items="@(new SelectList(Model.BrandList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ModelCode" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="ModelCode" class="form-select form-select-lg" asp-items="@(new SelectList(Model.ModelList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ModelDesc" class="control-label"></label></div>
+                            <div class="col-8">
+                                <input type="text" asp-for="ModelDesc" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ItemSlNo" class="control-label"></label></div>
+                            <div class="col-8">
+                                <input asp-for="ItemSlNo" class="form-control w-100" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="Quantity" class="control-label"></label></div>
+                            <div class="col-8">
+                                <input type="text" asp-for="Quantity" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"></div>
+                    <div class="col-6 btn-group p-3" role="group">
+                        <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Add"><span style=" color: Green; font-weight:bold;">Add to Curt</span></button>
+                        <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Save">Save</button>
+                        
+                        <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                        <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                    </div>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-responsive bg-light mt-2 p-2 rounded-2">
+            <div style="overflow-y: scroll; height:250px; position:relative;">
+                <table class="listTable w-100">
+                    <thead>
+                        <tr class="bg-black-gradient h-100">
+                        <td>SL#</td>
+                        <td>Brand</td>
+                        <td>Model</td>
+                        <td>Description</td>
+                        <td>Quantity</td>
+                        <td></td>
+                        </tr>
+                    </thead>
+                    <tbody id="tblList">
+                        @if (Model.ChallanList != null)
+                        {
+                            for (var i = 0; i < Model.ChallanList.Count; i++)
+                            {
+                                <tr>
+                                    <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.ChallanList[i].ChallanNo))</td>
+                                    <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.ChallanList[i].ChallanDate))</td>
+                                    <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.ChallanList[i].Customer))</td>
+                                    <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.ChallanList[i].PONo))</td>
+                                    <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.ChallanList[i].Quantity))</td>
+                                    <td style="border-top: 1px dotted;">
+                                        <button type="submit" id="btn" name="btn" value="Show" onclick="javascript: window.open('/Reports/Rpt_ChallanReport/1-'+'@(Model.ChallanList[i].ChallanNo.Substring(4, 8))', 'Report',  target='_blank','width=900,height=600,resizeable,scrollbars'); return false;">SHOW</button>
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr class="bg-black-gradient h-100">
+                        <td>SL#</td>
+                        <td>Brand</td>
+                        <td>Model</td>
+                        <td>Description</td>
+                        <td>Quantity</td>
+                        <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</form>

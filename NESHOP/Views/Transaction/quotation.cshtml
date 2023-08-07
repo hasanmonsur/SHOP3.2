@@ -1,0 +1,481 @@
+@model NeSHOP.Models.OrderModels
+
+@{
+    ViewData["Title"] = "Qutation Search";
+}
+
+@section Scripts{
+<script type="text/javascript">
+
+    $(function () {
+        $("#CustomerCode").focus();
+        $("input[name=IsVatTax][value=1]").attr('checked', 'checked');
+        $("#CostBuyPrice").attr('ReadOnly', true);
+
+        $("#SearchKey").change(function (event) {
+            $("#btn[value=Search]").click();
+            return true;
+
+        });
+
+        $("#CustomerCode").change(function (event) {
+            var ordType = $("#CustomerCode").val();
+            if (ordType == '') alert("Customer does not empty");
+            else {
+                $("#OrderSub").focus();
+
+            }
+            return false;
+        });
+
+        $("#CustomerCode").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#CustomerCode").val();
+                if (ordType == '') alert("Customer does not empty");
+                else {
+                    $("#OrderSub").focus();
+
+                }
+                return false;
+            }
+        });
+        $("#OrderSub").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#OrderSub").val();
+                if (ordType == '') {
+                    alert("Sub does not empty");
+                    $("#OrderSub").focus();
+                }
+                else {
+                    $("#CatagoryCode").focus();
+
+                }
+                return false;
+            }
+        });
+
+        $("#CatagoryCode").change(function () {
+            var url = '@Url.Content("~/")' + "Transaction/JfuncProductList";
+            var ddlsource = "#CatagoryCode";
+            var ddltarget = "#ProductCode";
+            $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                $(ddltarget).empty();
+                $.each(data, function (index, optionData) {
+                    $(ddltarget).append("<option value='" + optionData.value + "'>" + optionData.text + "</option>");
+                });
+            });
+            $("#ProductCode").focus();
+            return false;
+        });
+
+        $("#ProductCode").change(function () {
+            var url = '@Url.Content("~/")' + "Transaction/JfuncVenList";
+            var ddlsource = "#ProductCode";
+            var ddltarget = "#VenCode";
+            $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                $(ddltarget).empty();
+                $.each(data, function (index, optionData) {
+                    $(ddltarget).append("<option value='" + optionData.value + "'>" + optionData.text + "</option>");
+                });
+            });
+            $("#VenCode").focus();
+            return false;
+        });
+
+        $("#VenCode").change(function () {
+            var url = '@Url.Content("~/")' + "Transaction/JfuncModelList";
+            var ddlsource = "#VenCode";
+            var ddltarget = "#ModelCode";
+            $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                $(ddltarget).empty();
+                $.each(data, function (index, optionData) {
+                    $(ddltarget).append("<option value='" + optionData.value + "'>" + optionData.text + "</option>");
+                });
+            });
+            $("#ModelCode").focus();
+            return false;
+        });
+
+        $("#ModelCode").change(function () {
+            var url = '@Url.Content("~/")' + "Transaction/JfuncModelDesc";
+            var ddlsource = "#ModelCode";
+            var ddltarget = "#OrderDesc";
+            var ddltarget1 = "#CostBuyPrice";
+            $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                $(ddltarget).empty();
+                $(ddltarget).val(data[0].toString());
+                //alert(data[1].toString());
+                $(ddltarget1).empty();
+                $(ddltarget1).val(data[1].toString());
+            });
+            $("#OrderDesc").focus();
+            return false;
+        });
+
+
+        $("#OrderDesc").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#OrderDesc").val();
+                if (ordType == '') alert("Desc does not empty");
+                else {
+                    $("#CostPrice").val('');
+                    $("#CostPrice").focus();
+
+                }
+                return false;
+            }
+        });
+
+        $("#CostPrice").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#CostPrice").val();
+                if (ordType == '') alert("CostPrice does not empty");
+                else {
+                    $("#Quantity").focus();
+
+                }
+                return false;
+            }
+
+        });
+
+        $("#Quantity").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#Quantity").val();
+                if (ordType == '') alert("CostPrice does not empty");
+                else {
+                    $("#TaxPerc").val('');
+                    $("#TaxPerc").focus();
+
+                }
+                return false;
+            }
+
+        });
+
+        $("#TaxPerc").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#TaxPerc").val();
+                if (ordType == '') alert("TaxPerc does not empty");
+                else {
+                    $("#btn[value=Add]").focus();
+
+                }
+                return false;
+            }
+
+        });
+
+        $("#btn[value=Add]").click(function (event) {
+            var btnValue = $("#btn[value=Add]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            //var vatTax = $("input[name=IsVatTax]:checked").val(); // "Save";IsPaird
+            var isPared = '0';
+            var isVat = 'N';
+            var isTax = 'N';
+            if ($("#Is:checked").val())
+                isPared = '1';
+            if ($("#IsVat:checked").val())
+                isVat = 'Y';
+            if ($("#IsTax:checked").val())
+                isTax = 'Y';
+            //alert($("#IsPaird:checked").val());
+            if (answer != "0") {
+                if (feild_validity()) {
+                        var url = '@Url.Content("~/")' + "Transaction/JsonFuncOrderAdd";
+                    var params = {};
+                        var qString = $("#CatagoryCode").val() + "+" + $("#ProductCode").val() + "+" + $("#VenCode").val() + "+" + $("#ModelCode").val() + "+" + $("#CostPrice").val() + "+" + $("#OrderDesc").val() + "+" + $("#Quantity").val() + "+" + isVat + "+" + $("#VatPerc").val() + "+" + isTax + "+" + $("#TaxPerc").val();
+                    params.ids = qString.toString();
+                    
+
+                    $.getJSON(url, params, function (data) {
+                            $("#tblList").append("<tr id='tr" + data.slNo + "'><td>" + data.slNo + "</td><td>" + data.productName + "</td><td>" + data.vendorName + "</td><td>" + data.modelName + "</td><td>" + data.iteamDesc + "</td><td>" + data.quantity + "</td><td>" + data.costPrice + "</td><td>" + data.disPerc + "</td><td><a class='delete' href='#' >Delete-" + data.slNo + "</a></td></tr>");
+                    });
+                    $("#CatagoryCode").focus();
+                }
+                return false;
+
+            }
+            else return false;
+
+        });
+
+
+        $("#tblList").delegate('a.delete', 'click', function (e) {
+
+            var url = '@Url.Content("~/")' + "Transaction/JsonFuncOrderDelete";
+            var params = {};
+            var qString = $(this).text();
+            params.ids = qString.toString();
+            //alert(params.ids);
+            $.getJSON(url, params, function (data) {
+                smSg = data.toString();
+                alert(smSg);
+            });
+            e.preventDefault();
+            $(this).closest('tr').remove();
+        });
+
+        $("#btn[value=Delete]").click(function (event) {
+            var btnValue = $("#btn[value=Delete]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Save]").click(function (event) {
+            var btnValue = $("#btn[value=Save]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                //alert($("#Tarms").val());
+                if ($("#Tarms").val() == null) {
+                    alert('please select at least single terms condition');
+                    $("#Tarms").focus();
+                    $("#Tarms").val('1');
+                    return false;
+                }
+                else
+                    return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Clear]").click(function (event) {
+            var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Exit]").click(function (event) {
+            var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+        //---------------------Order Search-----------------------
+
+        $("#btn[value=Search]").click(function (event) {
+            var btnValue = $("#btn[value=Search]").val(); // "Exit";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                $("#btn[value=New]").attr("readonly", true);
+                return true;
+            }
+            else return false;
+        });
+
+        function feild_validity() {
+
+            var verCustomerCode = $("#CustomerCode").val();
+            var verOrderSub = $("#OrderSub").val();
+            var verCatagoryCode = $("#CatagoryCode").val();
+            var verProductCode = $("#ProductCode").val();
+            var verVendorCode = $("#VendorCode").val();
+            var verModelCode = $("#ModelCode").val();
+            var verOrderDesc = $("#OrderDesc").val();
+            var verCostPrice = $("#CostPrice").val();
+            if (verCustomerCode == '') {
+                alert('Customer not selected...');
+                $("#CustomerCode").focus();
+                return false;
+            }
+            else if (verOrderSub == '') {
+                alert('Subject not Empty...');
+                $("#OrderSub").focus();
+                return false;
+            }
+            else if (verCatagoryCode == '') {
+                alert('Catagory not selected...');
+                $("#CatagoryCode").focus();
+                return false;
+            }
+            else if (verProductCode == '') {
+                alert('Product not selected...');
+                $("#ProductCode").focus();
+                return false;
+            }
+            else if (verModelCode == '') {
+                alert('Model not selected...');
+                $("#ModelCode").focus();
+                return false;
+            }
+            else if (verOrderDesc == '') {
+                alert('Model Description does not empty...');
+                $("#OrderDesc").focus();
+                return false;
+            }
+            else if (verCostPrice == '0' || verCostPrice == '') {
+                alert('Cost does not empty...');
+                $("#CostPrice").val('');
+                $("#CostPrice").focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Quatation Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+
+                var qString = '2-' + $("#QutationTranno").val();
+                alert(qString);
+                window.open('/Reports/Rpt_QutationSearch/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Quatation Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Quatation Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+    });
+
+</script>
+
+}
+
+
+<form action="/Transaction/Quotation" method="post">
+    <div class="row container padding-top padding-bottom">
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>Qutation Entry</h4>
+            </div>
+            <div class="panel-body" style="width:95%">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row p-1 pt-3 mb-1">
+                            <div class="col-md-4"><label asp-for="CustomerCode" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <select asp-for="CustomerCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.CustomerList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-4"><label asp-for="OrderSub" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="OrderSub" class="form-control w-100" /> 
+
+                                <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+                                <input type="hidden" id="QutationTranno" value="@ViewData["QutationTranno"]" />
+                            </div>
+                        </div>   
+                        
+                        @*<div class="row p-1 mb-1">
+                            <div class="col-md-4"><label asp-for="CatagoryCode" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <select asp-for="CatagoryCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.CatagoryList, "Value", "Text" ))"> </select>
+                            </div>
+                        </div>
+                        <div class="row p-1 mb-1">
+                            <div class="col-md-4"><label asp-for="ProductCode" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <select asp-for="ProductCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.ProductList, "Value", "Text" ))"> </select>
+                            </div>
+                        </div>*@
+                        <div class="row p-1 mb-1">
+                            <div class="col-md-4"><label asp-for="VenCode" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <select asp-for="VenCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.VenList, "Value", "Text" ))"> </select>
+                            </div>
+                        </div>
+                        <div class="row p-1 mb-1">
+                            <div class="col-md-4"><label asp-for="ModelCode" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <select asp-for="ModelCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.ModelList, "Value", "Text" ))"> </select>
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-4"><label asp-for="OrderDesc" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="OrderDesc" class="form-control w-100" /> </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-4"><label asp-for="CostPrice" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="CostPrice" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-4"><label asp-for="Quantity" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="Quantity" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label class="control-label">VAT & TAX</label></div>
+                            <div class="col-4">
+                                <input type="checkbox" asp-for="IsVat" /> Vat ?
+                                <input type="text" asp-for="VatPerc" class="form-control w-75" />
+                            </div>
+                            <div class="col-4">
+                                <input type="checkbox" asp-for="IsTax" />Tax ?
+                                <input type="text" asp-for="TaxPerc" class="form-control w-75" />
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="col-6">
+                        <div class="pt-3 borderborder-2 ">
+                            <div class="col-12">
+                                <select asp-for="Tarms" size="12" multiple class="form-select form-select-lg w-100" asp-items='@(new SelectList(Model.TarmsList, "Value", "Text"))'> </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-2"></div>
+                    <div class="col-8 btn-group p-3" role="group">
+                        <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Add"><span style=" color: Green; font-weight:bold;">Add to Curt</span></button>
+                        <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Save">Save</button>
+                        <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                        <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-responsive bg-light mt-2 p-2 rounded-2">
+            <div style="overflow-y: scroll; height:250px; position:relative;">
+                <table class="listTable w-100">
+                    <thead>
+                        <tr class="bg-black-gradient h-100">
+                            <td>SL#</td>
+                            <td>Product</td>
+                            <td>Brand</td>
+                            <td>Model</td>
+                            <td>Description</td>
+                            <td>Quantity</td>
+                            <td>Price</td>
+                            <td>Vat/Tax(%)</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody id="tblList">
+                    </tbody>
+                    <tfoot>
+                        <tr class="bg-black-gradient h-100">
+                            <td>SL#</td>
+                            <td>Product</td>
+                            <td>Brand</td>
+                            <td>Model</td>
+                            <td>Description</td>
+                            <td>Quantity</td>
+                            <td>Price</td>
+                            <td>Vat/Tax(%)</td>
+                            <td></td>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</form>
+

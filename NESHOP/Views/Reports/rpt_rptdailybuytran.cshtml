@@ -1,0 +1,92 @@
+@model NeSHOP.Models.ReportsModel
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <title></title>
+
+    <script>
+        //printDivCSS = new String('<link href="myprintstyle.css" rel="stylesheet" type="text/css">')
+        function printDiv(divId) {
+            window.frames["print_frame"].document.body.innerHTML = document.getElementById(divId).innerHTML;
+            window.frames["print_frame"].window.focus();
+            window.frames["print_frame"].window.print();
+        }
+</script>
+</head>
+<body>
+    <div id=PrintDiv>
+      @*<h2>@(ViewData["Message"])</h2>*@
+      <table style="width: 100%;">
+            @if (Model.InstInfoDetails != null)
+                {
+            <tr >
+            <td colspan="8" style="text-align:center; border-bottom: 1px solid;  border-bottom-color:Black;">
+               <h2>@(Html.DisplayFor(m => m.InstInfoDetails.Instname))</h2>
+               @(Html.DisplayFor(m => m.InstInfoDetails.Instaddress)) <br />
+                @(Html.DisplayFor(m => m.InstInfoDetails.Instemail)),@(Html.DisplayFor(m => m.InstInfoDetails.Intphone))   <br />
+                @(Html.DisplayFor(m => m.ReportName))      
+            </td>                         
+            </tr>
+            <tr>
+            <td colspan="8" style="text-align:center; border-bottom: 1px solid;  border-bottom-color:Black;">
+                DATE: @(Html.DisplayFor(m => m.InstInfoDetails.DateFrom)) To @(Html.DisplayFor(m => m.InstInfoDetails.DateTo))       
+            </td>  
+            </tr>
+            }
+            <tr style="text-align:left; border-style:solid; border-top: 1px solid; border-bottom: 1px solid;   border-top-color:Black;">
+            <td>Tran # </td>
+            <td>Order # </td>
+            <td>Iteam </td>
+            <td>Unit</td>
+            <td>Price/Unit</td>
+            <td>Total </td>
+            <td>Paid </td>
+            <td>Pay Type </td>
+            </tr>
+            @if (Model.BuyTranData != null)
+            {
+                for (var i = 0; i < Model.BuyTranData.Count; i++)
+                {
+            <tr>
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.BuyTranData[i].TranNo))</td>
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.BuyTranData[i].OrdTranNo))</td>
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.BuyTranData[i].IteamName))</td>  
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.BuyTranData[i].QuantityPerIteam))</td> 
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.BuyTranData[i].UnitPricePerIteam))</td> 
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.BuyTranData[i].TotalAmount))</td> 
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.BuyTranData[i].PayAmount))</td> 
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.BuyTranData[i].PayType))</td> 
+             </tr>                 
+            }
+                    
+            }
+                @if (Model.BuyTranDataSum != null)
+                {
+                @*<tr>
+                <td colspan="7" style="text-align:left; border-top: 1px solid;  border-top-color:Black;">
+                <table  style="border:0px; width:100%;">
+                <tr>
+                <td colspan="5"> Total Amount</td>
+                <td colspan="2">@(Html.DisplayFor(m => m.BuyTranDataSum[0]))</td>
+                </tr>
+                </table>
+                </td>
+                </tr>*@
+                }
+            <tr>
+            <td colspan="8" style="text-align:left; border-top: 1px solid;  border-top-color:Black;">
+             &nbsp; 
+            </td>
+            </tr>
+         </table>
+    </div>
+    
+    <div>
+    <a href="javascript:printDiv('PrintDiv')">Print</a><br>
+    </div>
+
+    <iframe name=print_frame width=0 height=0 frameborder=0 src="about:blank"></iframe>
+</body>
+</html>

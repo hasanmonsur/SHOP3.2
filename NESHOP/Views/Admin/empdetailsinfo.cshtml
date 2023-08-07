@@ -1,0 +1,179 @@
+@model NeSHOP.Models.UserInfoModel
+
+@{
+    ViewData["Title"] = "Employee Info";
+}
+
+@section Scripts{
+<script type="text/javascript">
+
+        $(function () {
+            $("#NickName").focus();
+            if ($("#chkOpType").is(":checked")) {
+                $("#EmpId").attr("readonly", false);
+            }
+            else $("#EmpId").attr("readonly", true);
+
+            $("#EmpId").keypress(function (event) {
+                if (event.which == 13 || event.which == 9) {
+                    $("#NickName").focus();
+                    return false;
+                }
+            });
+
+            $("#NickName").keypress(function (event) {
+                if (event.which == 13 || event.which == 9) {
+                    $("#FullName").focus();
+                    return false;
+                }
+            });
+
+            $("#FullName").keypress(function (event) {
+                if (event.which == 13 || event.which == 9) {
+                    $("#EmpAddress").focus();
+                    return false;
+                }
+
+            });
+
+            $("#EmpAddress").keypress(function (event) {
+                if (event.which == 13 || event.which == 9) {
+                    $("#EmpComments").focus();
+                    return false;
+                }
+
+            });
+
+            $("#EmpComments").keypress(function (event) {
+                if (event.which == 13 || event.which == 9) {
+                    $("#EmpEmail").focus();
+                    return false;
+                }
+
+            });
+
+            $("#EmpEmail").keypress(function (event) {
+                if (event.which == 13 || event.which == 9) {
+                    $("#EmpPhone").focus();
+                    return false;
+                }
+
+            });
+
+            $("#EmpPhone").keypress(function (event) {
+                if (event.which == 13 || event.which == 9) {
+                    $("#btnSave").focus();
+                    return false;
+                }
+
+            });
+
+            $("#chkOpType").change(function (event) {
+                if ($("#chkOpType").is(":checked")) {
+                    $("#EmpId").attr("readonly", false);
+                    $("#EmpId").focus();
+                    return false;
+                }
+                else {
+                    $("#EmpId").attr("readonly", true);
+                    $("#NickName").focus();
+                    return false;
+                }
+            });
+
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Stockin Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Stockin Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Stockin Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+        });
+
+    </script>
+    }
+
+
+
+<form action="/Admin/dayend" method="post"> 
+    <div class="row container padding-top padding-bottom">
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>Challan Search</h4> 
+            </div>
+            <div class="panel-body">
+                        <div class="row p-1 mb-1">
+                            <div class="col-md-4"><label asp-for="EmpId" class="control-label"></label></div>
+                            <div class="col-md-8">                                
+                                <select asp-for="EmpId" class="form-select form-select-lg w-50 h-75" asp-items="@(new SelectList(Model.EmpIdList, "Value", "Text"))"> </select>
+                                <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+                            </div>
+                        </div> 
+
+                        <div class="row p-1 mb-2">
+                            <div class="col-md-4"><label asp-for="NickName" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <input type="text" asp-for="NickName" class="form-control w-50 rounded-1" />
+                            </div>
+                        </div>          
+
+                        <div class="row p-1 mb-2">
+                            <div class="col-md-4"><label asp-for="FullName" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <input type="text" asp-for="FullName" class="form-control w-50 rounded-1" />
+                            </div>
+                        </div>          
+                         <div class="row p-1 mb-2">
+                            <div class="col-md-4"><label asp-for="NickName" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <input type="text" asp-for="NickName" class="form-control w-50 rounded-1" />
+                            </div>
+                        </div>          
+                        <div class="row p-1 mb-2">
+                            <div class="col-md-4"><label asp-for="EmpEmail" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <input type="text" asp-for="EmpEmail" class="form-control w-50 rounded-1" />
+                            </div>
+                        </div>          
+                         <div class="row p-1 mb-2">
+                            <div class="col-md-4"><label asp-for="EmpPhone" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <input type="text" asp-for="EmpPhone" class="form-control w-50 rounded-1" />
+                            </div>
+                        </div>    
+
+                        <div class="row p-1 mb-2">
+                            <div class="col-md-4"><label asp-for="EmpAddress" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <input type="text" asp-for="EmpAddress" class="form-control w-50 rounded-1" />
+                            </div>
+                        </div>    
+
+                         <div class="row p-1 mb-2">
+                            <div class="col-md-4"><label asp-for="IsActive" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <input type="CheckBox" asp-for="IsActive" class="form-control" />
+                            </div>
+                        </div>    
+
+                        <div class="row mb-2">
+                            <div class="col-4"></div>
+                            <div class="col-6 btn-group p-3" role="group">
+                                <button type="submit" class="btn btn-primary btn-sm" id="btn" name="btn" value="Search">Search</button>
+                                <button type="submit" class="btn btn-warnning btn-sm" id="btn" name="btn" value="Update">Update</button>
+                                <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Save">Save</button>
+                                <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                                <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                            </div>
+                        </div>
+                </div> 
+
+            </div>
+        </div>
+    </div>
+</form>
+

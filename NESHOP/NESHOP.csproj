@@ -1,0 +1,102 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\Account\old\**" />
+    <Compile Remove="Views\Admin\old\**" />
+    <Compile Remove="Views\Home\old\**" />
+    <Compile Remove="Views\Inventory\old\**" />
+    <Compile Remove="Views\Reports\old\**" />
+    <Compile Remove="Views\Settings\old\**" />
+    <Compile Remove="Views\Transaction\old\**" />
+    <Content Remove="Views\Account\old\**" />
+    <Content Remove="Views\Admin\old\**" />
+    <Content Remove="Views\Home\old\**" />
+    <Content Remove="Views\Inventory\old\**" />
+    <Content Remove="Views\Reports\old\**" />
+    <Content Remove="Views\Settings\old\**" />
+    <Content Remove="Views\Transaction\old\**" />
+    <EmbeddedResource Remove="Views\Account\old\**" />
+    <EmbeddedResource Remove="Views\Admin\old\**" />
+    <EmbeddedResource Remove="Views\Home\old\**" />
+    <EmbeddedResource Remove="Views\Inventory\old\**" />
+    <EmbeddedResource Remove="Views\Reports\old\**" />
+    <EmbeddedResource Remove="Views\Settings\old\**" />
+    <EmbeddedResource Remove="Views\Transaction\old\**" />
+    <None Remove="Views\Account\old\**" />
+    <None Remove="Views\Admin\old\**" />
+    <None Remove="Views\Home\old\**" />
+    <None Remove="Views\Inventory\old\**" />
+    <None Remove="Views\Reports\old\**" />
+    <None Remove="Views\Settings\old\**" />
+    <None Remove="Views\Transaction\old\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Contacts\IBllBarcode.cs" />
+    <Compile Remove="Controllers\HomeController - Copy.cs" />
+    <Compile Remove="DAL\BllAppInfo.cs" />
+    <Compile Remove="DAL\BllBarcode.cs" />
+    <Compile Remove="DAL\BllMenuInfo.cs" />
+    <Compile Remove="DAL\BllModuleInfo.cs" />
+    <Compile Remove="DAL\BllRoleInfo.cs" />
+    <Compile Remove="DAL\BllVendor.cs" />
+    <Compile Remove="Helpers\BarCodeTagHelper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Admin\dayend.cshtml" />
+    <Content Remove="Views\Admin\empdetailsinfo.cshtml" />
+    <Content Remove="Views\Home\Index - Copy - Copy.cshtml" />
+    <Content Remove="Views\Home\Index - Copy.cshtml" />
+    <Content Remove="Views\Home\Privacy - Copy.cshtml" />
+    <Content Remove="Views\Inventory\duplicateiteam.cshtml" />
+    <Content Remove="Views\Inventory\stockfaultupdate.cshtml" />
+    <Content Remove="Views\Inventory\stockout.cshtml" />
+    <Content Remove="Views\Inventory\Untitled-1.cshtml" />
+    <Content Remove="Views\Reports\rptstockdetails.cshtml" />
+    <Content Remove="Views\Transaction\dailytran.cshtml" />
+    <Content Remove="Views\Transaction\salesentry.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.ReportViewer" Version="3.0.0.200103" />
+    <PackageReference Include="BarcodeLib" Version="2.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="ReportViewerCore.NETCore" Version="15.1.17" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Reports\RdlRpt_AcTranReport.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_AcTranReportDetails.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_ChallanRepot.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_DuplicateStock.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_FaultStock.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_InvoiceList.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_InvoicePrePadReport.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_InvoiceReport.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_QutationReport.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_QutationReportWithHeader.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_StockDetails.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_StockSearch.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_StockWarranty.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_TranReport.rdlc" />
+    <None Include="wwwroot\Reports\RdlRpt_TranVoucher.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+    <Folder Include="wwwroot\barcodes\" />
+  </ItemGroup>
+
+</Project>

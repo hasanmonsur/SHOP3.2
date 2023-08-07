@@ -1,0 +1,180 @@
+
+@section MainContent { 
+    @using (Html.BeginForm()) { 
+     
+       <fieldset class="EntryFildSet">
+       <legend>Stock of Inventory</legend>    
+        <table style="width: 100%; border-top-color:transparent;">
+        <tr>
+        <td>
+        <fieldset class="EntryFildSet">
+                       @(Html.RadioButtonFor(m => m.SearchType, '1', 1))  Stock In<br />
+                       @(Html.RadioButtonFor(m => m.SearchType, '2', 2))  Stock Out<br />
+                       @(Html.RadioButtonFor(m => m.SearchType, '3', 3))  Curent Stock <br />
+        </fieldset>
+        </td>    
+        <td>    
+        <fieldset class="EntryFildSet">
+         <table style="width: 100%; table-layout:auto; ">          
+             <tr>
+                <td>
+                    @(Html.LabelFor(m => m.ChallanNo))
+          
+                </td>
+                <td>
+                         @(Html.TextBoxFor(m => m.ChallanNo))
+                </td>
+               
+               @*<td>
+                    @(Html.LabelFor(m => m.CatagoryCode))
+          
+                </td>
+                <td>
+                         @(Html.DropDownListFor(m => m.CatagoryCode, Model.CatagoryList))
+                </td>*@
+            </tr>
+           
+            @*<tr>
+                 <td>
+                    @(Html.LabelFor(m => m.IteamSLNo))
+                
+                </td>
+                <td>
+                        @(Html.TextBoxFor(m => m.IteamSLNo)) 
+                   
+                </td>
+                <td>
+                    @(Html.LabelFor(m => m.ProductCode))
+          
+                </td>
+                <td>
+                         @(Html.DropDownListFor(m => m.ProductCode, Model.ProductList))
+                </td>
+               
+            </tr>*@
+            <tr>
+                 <td>
+                    @(Html.LabelFor(m => m.TranDateFrom))
+                
+                </td>
+                <td>
+                        @(Html.EditorFor(m => m.TranDateFrom)) 
+                   
+                </td>
+                <td>
+                   
+                    @(Html.LabelFor(m => m.BrandCode))
+                                 
+                </td>
+                <td>
+                 
+                        @(Html.DropDownListFor(m => m.BrandCode, Model.BrandList))
+                   
+                </td>           
+            </tr>
+            <tr>
+                <td>
+                    @(Html.LabelFor(m => m.TranDateTo))
+                
+                </td>
+                <td>
+                        @(Html.EditorFor(m => m.TranDateTo)) 
+                   
+                </td>
+                <td>
+                    @(Html.LabelFor(m => m.ModelCode))
+          
+                </td>
+                <td>
+                         @(Html.DropDownListFor(m => m.ModelCode, Model.ModelList))
+                </td>
+               
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;         
+                </td>
+                <td colspan="2">
+                        <button type="submit" id="btn" name="btn" value="Search">Search</button> 
+                        <button type="submit" id="btn" name="btn" value="Preview">Preview</button>                    
+                        <button type="submit" id="btn" name="btn" value="Clear">Clear</button>
+                        <button type="submit" id="btn" name="btn" value="Exit">Exit</button>
+                </td>            
+            </tr> 
+                    
+          </table>
+          </fieldset>
+        </td>
+        </tr>
+            <tr>
+            <td colspan="2">
+            <fieldset class="fieldStyle">
+                <asp:Panel ID="Panel1" runat="server" ScrollBars="Vertical" Height="300px">
+                
+            @*<div id="PrintDiv" style="overflow-y: scroll; height:300px; position:relative;">*@
+           <table>
+           <tr>
+           <td>        
+           <table class="listTable">
+           <thead>
+           <tr style="background-color:#99DAF9;">      
+           <td>SL #</td>
+           <td>Publication</td>
+           <td>Book Model</td>
+           <td>Stock</td>
+           </tr>
+           </thead>       
+           <tbody id="tblList">            
+           @if (Model.IteamList != null)
+                {
+                    for (var i = 0; i < Model.IteamList.Count; i++)
+                    {
+                <tr>               
+                    <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].SLNo))</td> 
+                    <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].VendorName))</td>
+                    <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].ModelName))</td> 
+                    <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].TotalStock))</td> 
+                 </tr>                 
+                }
+                        
+                }
+                 </tbody>
+                
+           </table>       
+           </td>
+           </tr>        
+           </table>  
+           </asp:Panel>
+           @*</div>*@       
+            </fieldset>
+            </td>
+            </tr>
+        </table>   
+    </fieldset> 
+    
+    <div>
+                      @if (Model.MsgCode != null)
+                          {
+                              if (Model.MsgCode == "1")
+                              {
+                        <script type="text/javascript">
+                            alert("Iteam Entry Successfull............!!!!!");
+                        </script>
+                             }
+                              else if (Model.MsgCode == "2")
+                              {
+                             <script type="text/javascript">                             alert("Iteam Update Successfull............!!!!!");  </script>
+                              }
+                              else if (Model.MsgCode == "3")
+                              {
+                              <script type="text/javascript">                              alert("Data Import Fail, Please Check Valid Info....!");  </script>
+                              }
+    
+                        }            
+    
+                
+           </div>
+           
+           } 
+    }
+    

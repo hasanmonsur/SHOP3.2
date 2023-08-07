@@ -1,0 +1,505 @@
+@model NeSHOP.Models.InvoiceModels
+
+@{
+    ViewData["Title"] = "Invoice modify";
+}
+
+@section Scripts{
+<script type="text/javascript">
+
+    $(function () {
+        $("#InvoiceNo").focus();
+        $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                startDate: '-3y',
+                Default: true
+            });
+
+        $("#CostBuyPrice").attr('ReadOnly', true);
+
+        $("#InvoiceNo").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#InvoiceNo").val();
+                if (ordType == '' || ordType.length > 8) {
+                    alert("Invoice No is not valid....");
+                    $("#InvoiceNo").focus();
+                }
+                else {
+                        var url = '@Url.Content("~/")' + "Transaction/JsonFuncSearchAllInvoice";
+                    var params = {};
+                    var qString = $("#InvoiceNo").val();
+
+                    params.ids = qString.toString();
+
+                    $.getJSON(url, params, function (data) {
+                        $("#tblList").empty();
+
+                        for (i = 0; i < data.ChallanList.length; i++) {
+                            //alert(data.ChallanList[i].SLNo);
+                            $("#tblList").append("<tr id='tr" + data.ChallanList[i].slNo + "'><td>" + data.ChallanList[i].slNo + "</td><td>" + data.ChallanList[i].productName + "</td><td>" + data.ChallanList[i].modelName + "</td><td>" + data.ChallanList[i].quantity + "</td><td>" + data.ChallanList[i].costPrice + "</td><td>" + data.ChallanList[i].commPerc + "</td><td><a class='delete' href='#' >Delete-" + data.ChallanList[i].SLNo + "</a></td></tr>");
+                        }
+
+                        //-------------------------------
+                        $("#CustomerCode").val(data.pDataList[4]);
+                        $("#TQuantity").val(data.pDataList[0]);
+                        $("#TAmount").val(data.pDataList[1]);
+                        $("#DisPerc").val(data.pDataList[3]);
+                        $("#NetAmount").val(data.pDataList[2]);
+
+                    });
+
+                    $("#TQuantity").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#BrandCode").change(function () {
+                var url = '@Url.Content("~/")' + "Inventory/JfuncModelList";
+            var ddlsource = "#BrandCode";
+            var ddltarget = "#ModelCode";
+            $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                $(ddltarget).empty();
+                $.each(data, function (index, optionData) {
+                    $(ddltarget).append("<option value='" + optionData.value + "'>" + optionData.text + "</option>");
+                });
+            });
+            $("#ModelCode").focus();
+            return false;
+        });
+
+        $("#ModelCode").change(function () {
+                var url = '@Url.Content("~/")' + "Transaction/JfuncModelDesc";
+            var ddlsource = "#ModelCode";
+            var ddltarget = "#ModelDesc";
+            var ddltarget1 = "#UnitPrice";
+            $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                $(ddltarget).empty();
+                $(ddltarget).val(data[0].toString());
+                $(ddltarget1).val(data[1].toString());
+            });
+            $("#UnitPrice").focus();
+            return false;
+
+        });
+
+        $("#ModelDesc").keypress(function (event) {
+            if (event.which == 13) {
+                $("#Quantity").val('');
+                $("#Quantity").focus();
+
+                return false;
+            }
+
+        });
+
+        $("#UnitPrice").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#UnitPrice").val();
+                if (ordType == '') alert("UnitPrice does not empty");
+                else {
+
+                    $("#Quantity").val('0');
+                    $("#Quantity").focus();
+                    $("#Quantity").select();
+                }
+                return false;
+            }
+        });
+
+
+        $("#Quantity").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#Quantity").val();
+                if (ordType == '') alert("Quantity does not empty");
+                else {
+                    $("#CommPerc").val('0');
+                    $("#CommPerc").focus();
+                    $("#CommPerc").select();
+                }
+                return false;
+            }
+        });
+
+        $("#CommPerc").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#CommPerc").val();
+                if (ordType == '') alert("Comm Perc does not empty");
+                else {
+                    $("#btn[value=Add]").focus();
+                }
+                return false;
+            }
+        });
+
+
+        $("#CustomerCode").change(function () {
+            var ordType = $("#CustomerCode").val();
+            if (ordType == '') alert("CustomerCode does not empty");
+            else {
+                    var url = '@Url.Content("~/")' + "Transaction/JfuncChallanList";
+                var ddlsource = "#CustomerCode";
+                var ddltarget = "#ChalanNo";
+                $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                    $(ddltarget).empty();
+                    $.each(data, function (index, optionData) {
+                        $(ddltarget).append("<option value='" + optionData.value + "'>" + optionData.text + "</option>");
+                    });
+                });
+                $("#TransportAmount").focus();
+                $("#TransportAmount").select();
+            }
+            return false;
+
+        });
+
+        $("#DisPerc").keypress(function (event) {
+            if (event.which == 13) {
+                var verTAmount = $("#TAmount").val();
+                var verNetAmount = $("#NetAmount").val();
+                var ordType = $("#DisPerc").val();
+                if (ordType == '') {
+                    $("#DisPerc").val('0');
+                    $("#DisPerc").focus();
+                }
+                else {
+                    var verDisPer = $("#DisPerc").val();
+                    var verDescAmount = (parseFloat(verTAmount) * parseFloat(verDisPer)) / 100;
+                    $("#NetAmount").val((parseFloat(verNetAmount) - verDescAmount).toString());
+
+                    $("#TransportAmount").focus();
+                }
+                return false;
+            }
+        });
+
+
+        $("#TransportAmount").keypress(function (event) {
+            if (event.which == 13) {
+                var verNetAmount = $("#NetAmount").val();
+                var ordType = $("#TransportAmount").val();
+                if (ordType == '') {
+                    $("#TransportAmount").val('0');
+                    $("#TransportAmount").focus();
+                }
+                else {
+                    var verTranCost = $("#TransportAmount").val();
+                    //var verDescAmount = (parseFloat(verTAmount) * parseFloat(verDisPer)) / 100;
+                    $("#NetAmount").val((parseFloat(verNetAmount) + parseFloat(verTranCost)).toString());
+
+                    $("#btn[value=Save]").focus();
+                }
+                return false;
+            }
+        });
+
+        //--------------------------------------------------------
+        $("#tblList td").click(function (e) {
+            var currentCellText = $(this).text();
+            var RowIndex = $(this).parent().parent().children().index($(this).parent());
+            var ColIndex = $(this).parent().children().index($(this));
+            var qString = currentCellText;
+
+            if (ColIndex == 0 && RowIndex >= 0 && currentCellText != '') {
+                $("#IteamCode").val(qString);
+                $("#btn[value=Search]").click();
+
+            }
+
+            return false;
+        });
+
+
+        //-------------------------------------------------------
+
+        $("#btn[value=Add]").click(function (event) {
+            var btnValue = $("#btn[value=Add]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                    var url = '@Url.Content("~/")' + "Transaction/JsonFuncChallanAddAtInvoice";
+                var params = {};
+                var qString = $("#ModelCode").val() + "+" + $("#Quantity").val() + "+" + $("#UnitPrice").val() + "+" + $("#ModelDesc").val() + "+" + $("#CommPerc").val();
+
+                params.ids = qString.toString();
+                //alert(qString);
+
+                $.getJSON(url, params, function (data) {
+                    $("#tblList").append("<tr id='tr" + data.slNo + "'><td>" + data.slNo + "</td><td>" + data.productName + "</td><td>" + data.modelName + "</td><td>" + data.quantity + "</td><td>" + data.costPrice + "</td><td>" + data.commPerc + "</td><td><a class='delete' href='#' >Delete-" + data.slNo + "</a></td></tr>");
+                    //-------------------------------
+                    $("#TQuantity").val(data.pDataList[0]);
+                    $("#TAmount").val(data.pDataList[1]);
+                    $("#DisPerc").val(data.pDataList[3]);
+                    $("#NetAmount").val(data.pDataList[2]);
+
+                });
+
+                $("#BrandCode").focus();
+
+                return false;
+            }
+            else return false;
+
+        });
+
+
+        $("#tblList").delegate('a.delete', 'click', function (e) {
+
+                var url = '@Url.Content("~/")' + "Transaction/JsonFuncDeleteFromInvoice";
+            var params = {};
+            var qString = $(this).text();
+            params.ids = qString.toString();
+            //alert(params.ids);
+            $.getJSON(url, params, function (data) {
+                $("#TQuantity").val(data.pDataList[0]);
+                $("#TAmount").val(data.pDataList[1]);
+                $("#DisPerc").val(data.pDataList[3]);
+                $("#NetAmount").val(data.pDataList[2]);
+                //smSg = data[5].toString();
+                //alert(smSg);
+            });
+            e.preventDefault();
+            $(this).closest('tr').remove();
+        });
+
+        $("#btn[value=Save]").click(function (event) {
+            var btnValue = $("#btn[value=Save]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                if (feild_validity()) {
+                    var trCost = $("#TransportAmount").val();
+                    if (trCost == '' || trCost == '0') {
+                        answerTr = confirm("Are you want to continue save without transport cost ....?");
+                        if (answerTr != "0") {
+                            return true;
+                        }
+                        else {
+                            $("#TransportAmount").focus();
+                            return false;
+                        }
+                    }
+
+                }
+                else return false;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Clear]").click(function (event) {
+            var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Exit]").click(function (event) {
+            var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        function feild_validity() {
+
+            var verCustomerCode = $("#CustomerCode").val();
+            //var verChalanNo = $("#ChalanNo").val();
+            //var verModelCode = $("#ModelCode").val();
+            //var verQuantity = $("#Quantity").val();
+            //var verUnitPrice = $("#UnitPrice").val();
+            // var verTaxPerc = $("#TaxPerc").val();
+
+            if (verCustomerCode == '') {
+                alert('Customer not selected...');
+                $("#CustomerCode").focus();
+                return false;
+            }
+            /*else if (verChalanNo == '' || verChalanNo == 'CHL-') {
+            alert('Chalan No not Empty..');
+            $("#ChalanNo").focus();
+            return false;
+            }
+            else if (verModelCode == '') {
+            alert('Product not selected...');
+            $("#ModelCode").focus();
+            return false;
+            }
+            else if (verQuantity == '' || verQuantity == '0') {
+            alert('Qunatity does not empty...');
+            $("#Quantity").val('');
+            $("#Quantity").focus();
+            return false;
+            }
+            else if (verUnitPrice == '' || verUnitPrice == '0') {
+            alert('Price does not empty...');
+            $("#UnitPrice").val('');
+            $("#UnitPrice").focus();
+            return false;
+            }*/
+
+            else {
+                return true;
+            }
+        }
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Stockin Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Stockin Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Stockin Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+    });      
+        
+</script> 
+}
+
+<form action="/Transaction/invoicemodify" method="post"> 
+    <div class="row container padding-top padding-bottom">
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>Invoice Modify</h4>
+            </div>
+            <div class="panel-body" style="width:95%">
+                <div class="row pt-3">
+                    <div class="col-6">
+                        <div class="row p-1 mb-1">
+                            <div class="col-md-4"><label asp-for="BrandCode" class="control-label"></label></div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-8">
+@*                                        <select asp-for="BrandCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.BrandList, "Value", "Text"))">*@
+                                            <select asp-for="BrandCode" class="form-select form-select-lg w-100" asp-items="Model.BrandList">
+                                            </select>
+                                     </div>
+                                     <div class="col-4">
+                                        <button type="submit" class="btn btn-primary btn-sm" id="btn" name="btn" value="New">New Product</button>
+                                        <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+                                     </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ModelCode" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="ModelCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.ModelList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ModelDesc" class="control-label"></label></div>
+                            <div class="col-8"><input type="textarea" asp-for="ModelDesc" class="form-control w-100" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="UnitPrice" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="UnitPrice" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="Quantity" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="Quantity" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="CommPerc" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="CommPerc" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"></div>
+                            <div class="col-8 btn-group p-3" role="group">
+                                <button type="submit" class="btn btn-primary btn-sm" id="btn" name="btn" value="Add">Add</button>
+                                <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Save">Save</button>
+                                <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                                <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="InvoiceNo" class="control-label"></label></div>
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input type="text" asp-for="InvoiceNo" class="form-control w-100" />
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-primary btn-sm" id="btn" name="btn" value="Search">Search</button>                                        
+                                    </div>
+
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="InvoiceDate" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="InvoiceDate" class="datepicker form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="CustomerCode" class="control-label"></label></div>
+                            <div class="col-8"><select asp-for="CustomerCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.CustomerList, "Value", "Text"))"> </select></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="TQuantity" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="TQuantity" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="TAmount" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="TAmount" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="DisPerc" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="DisPerc" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="TransportAmount" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="TransportAmount" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="NetAmount" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="NetAmount" class="form-control w-50" /> </div>
+                        </div>
+                    </div>               
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-responsive bg-light mt-2 p-2 rounded-2">
+            <div style="overflow-y: scroll; height:250px; position:relative;">
+                <table class="listTable w-100">
+                    <thead>
+                        <tr class="bg-black-gradient h-100">
+                        <td>Sl#</td>
+                        <td>Brand</td>
+                        <td>Book Name</td>
+                        <td>Quantity</td>
+                        <td>Price/Unit</td>   
+                        <td>Comm (%)</td>   
+                        <td></td>
+                        </tr>
+                    </thead>
+                    <tbody id="tblList">            
+                    </tbody>
+                    <tfoot>
+                        <tr class="bg-black-gradient h-100">
+                        <td>Sl#</td>
+                        <td>Brand</td>
+                        <td>Book Name</td>
+                        <td>Quantity</td>
+                        <td>Price/Unit</td>   
+                        <td>Comm (%)</td>   
+                        <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+

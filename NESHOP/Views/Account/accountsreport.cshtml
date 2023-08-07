@@ -1,0 +1,244 @@
+@model NeSHOP.Models.AcTranModel
+
+@{
+    ViewData["Title"] = "Accounts Report";
+}
+
+@section Scripts{
+<script type="text/javascript">
+
+    $(function () {
+        $("input[name='SearchType'][value=3]").attr("checked", true);
+        $("#PType").focus();
+        //$("#TranDateFrom").datepicker({ dateFormat: "yy-mm-dd" }).val();
+        //$("#TranDateTo").datepicker({ dateFormat: "yy-mm-dd" }).val();
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                startDate: '-3y',
+                Default: true
+            });
+
+
+        $("#PType").change(function () {
+                var url = '@Url.Content("~/")' + "Account/JfuncCustomerList";
+            var ddlsource = "#PType";
+            var ddltarget = "#CustomerCode";
+            $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                $(ddltarget).empty();
+                $.each(data, function (index, optionData) {
+                    $(ddltarget).append("<option value='" + optionData.value + "'>" + optionData.text + "</option>");
+                });
+            });                       
+            $("#CustomerCode").focus();
+            return false;
+        });
+
+        $("#CustomerCode").change(function () {
+            var ordType = $("#CustomerCode").val();
+            if (ordType == '') {
+                alert("CustomerCode does not empty");
+            }
+            else {
+                $("#TranDateFrom").focus();
+            }
+            return false;
+        });
+
+        $("#TranDateFrom").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#TranDateTo").focus();
+                return false;
+            }
+        });
+        $("#TranDateTo").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#btn[value=Search]").focus();
+                return false;
+            }
+        });
+
+
+        $("input[name='SearchType']").change(function () {
+
+            var btnValue = $("input[name='SearchType']:checked").val(); // "Save";
+            //alert(btnValue);
+            if (btnValue == "1") {
+                //alert('Hello');
+                $("#TranDateFrom").datepicker({ dateFormat: "yy-mm-dd" }).val('2014-01-01');
+                return false;
+            }
+            else if (btnValue == "2") {
+                //$("#TranDateFrom").val($("#TranDateTo").val());
+                $("#TranDateFrom").datepicker({ dateFormat: "yy-mm-dd" }).val('2014-01-01');
+                return false;
+            }
+            else if (btnValue == "3") {
+                $("#TranDateFrom").val($("#TranDateTo").val());
+                // $("#TranDateFrom").datepicker({ dateFormat: "yy-mm-dd" }).val('2014-01-01');
+                return false;
+            }
+
+        });
+
+        ///--------------------------------------------------
+
+
+        $("#btn[value=Search]").click(function (event) {
+            var btnValue = $("#btn[value=Search]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Preview]").click(function (event) {
+            var btnValue = $("#btn[value=Preview]").val(); // "Save";
+            var rType = $('input:radio[name=SearchType]:checked').val();// $("#SearchType:checked").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                var qString = rType + '+' + $("#PType").val() + '+' + $("#CustomerCode").val() + '+' + $("#TranDateFrom").val() + '+' + $("#TranDateTo").val();
+                //alert(qString);
+                window.open('/Reports/Rpt_AcTranReport/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+
+            }
+            return false;
+        });
+
+        $("#btn[value=Clear]").click(function (event) {
+            var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Exit]").click(function (event) {
+            var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Stockin Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Stockin Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Stockin Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+    });         
+        
+  </script> 
+
+}
+
+
+<form action="/Account/accountsreport" method="post"> 
+    <div class="row container padding-top padding-bottom" style="width:95%">
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>Challan Search</h4>
+            </div>
+            <div class="panel-body">
+                        <div class="row p-1 pt-3 mb-1">
+                            <div class="col-md-4"><label class="control-label">Report Type</label></div>
+                            <div class="col-md-8">
+                                <input type="radio" asp-for="SearchType" value="1" /> Summery
+                                <input type="radio" asp-for="SearchType" value="2" /> Details
+                                <input type="radio" asp-for="SearchType" value="3" /> Daily Search
+
+
+                                <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+                            </div>
+                        </div>
+                        <hr/>
+                <div class="row mb-1">
+                            <div class="col-4"><label asp-for="PType" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="PType" class="form-select form-select-lg w-50" asp-items="@(new SelectList(Model.PTypeList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-4"><label asp-for="CustomerCode" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="CustomerCode" class="form-select form-select-lg w-50" asp-items="@(new SelectList(Model.CustomerList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>                        
+                        <div class="row mb-1">
+                            <div class="col-4"><label asp-for="TranDateFrom" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="TranDateFrom" class="datepicker form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-4"><label asp-for="TranDateTo" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="TranDateTo" class="datepicker form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"></div>
+                            <div class="col-6 btn-group p-3" role="group">
+                                <button type="submit" class="btn btn-primary btn-sm" id="btn" name="btn" value="Search">Search</button>
+                                <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Preview">Preview</button>
+                                <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                                <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                            </div>
+                        </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-responsive bg-light mt-2 p-2 rounded-2">
+            <div style="overflow-y: scroll; height:250px; position:relative;">
+                <table class="listTable w-100">
+                    <thead>
+                        <tr class="bg-black-gradient h-100">
+                            <td>Tran #</td>
+                            <td>Party Name</td>
+                            <td style=" text-align:center">Tran Type</td>
+                            <td style=" text-align:right">Details</td>       
+                            <td style=" text-align:right">Dr Amount</td>
+                            <td style=" text-align:right">Cr Amount</td>
+                            <td style=" text-align:right">Status</td>
+                        </tr>
+                        </thead>
+                        <tbody id="tblList">  
+                        @for (var i = 0; i < Model.AcList.Count; i++)
+                                {
+                                <tr>            
+                                <td>@(Html.DisplayFor(m => m.AcList[i].TranNo))</td>
+                                <td>@(Html.DisplayFor(m => m.AcList[i].Customer))</td>
+                                <td style=" text-align:center">@(Html.DisplayFor(m => m.AcList[i].TranType)) </td>
+                                <td style=" text-align:right">@(Html.DisplayFor(m => m.AcList[i].ChequeDetails)) </td>               
+                                    <td style=" text-align:right">@(Html.DisplayFor(m => m.AcList[i].DrAmount)) </td>
+                                    <td style=" text-align:right">@(Html.DisplayFor(m => m.AcList[i].CrAmount)) </td>  
+                                    <td style=" text-align:right">@(Html.DisplayFor(m => m.AcList[i].Status)) </td>                
+                                </tr>         
+                                }          
+                        </tbody>           
+                        <tfoot>
+                        <tr class="bg-black-gradient h-100">
+                            <td>Tran #</td>
+                            <td>Party Name</td>
+                            <td style=" text-align:center">Tran Type</td>
+                            <td style=" text-align:right">Details</td>       
+                            <td style=" text-align:right">Dr Amount</td>
+                            <td style=" text-align:right">Cr Amount</td>
+                            <td style=" text-align:right">Status</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+
+

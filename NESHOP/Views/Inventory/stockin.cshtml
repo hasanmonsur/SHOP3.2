@@ -1,0 +1,338 @@
+@model NeSHOP.Models.IteamModels
+
+@{
+    ViewBag.Title = "Stockin";   
+}
+
+@section Scripts{
+    <script type="text/javascript">
+
+    $(function () {
+        $("#BrandCode").focus();
+        $("#IteamCode").attr('ReadOnly', true);       
+        
+        $("#BrandCode").change(function () {
+            var url = '@Url.Content("~/")' + "Inventory/JfuncModelList";
+            var ddlsource = "#BrandCode";
+            var ddltarget = "#ModelCode";
+            $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                $(ddltarget).empty();
+                $.each(data, function (index, optionData) {
+                        $(ddltarget).append("<option value='" + optionData.value + "'>" + optionData.text + "</option>");
+                });
+            });
+            $("#ModelCode").focus();
+            return false;
+        });
+
+        $("#ModelCode").change(function () {
+                var url = '@Url.Content("~/")' + "Transaction/JfuncModelDesc";
+            var ddlsource = "#ModelCode";
+            var ddltarget = "#IteamDesc";
+            $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {                
+                $(ddltarget).empty();
+                $(ddltarget).val(data[0].toString());
+            });
+            
+            $("#ChallanNo").focus();            
+            return false;
+        });
+
+        $("#ChallanNo").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#ChallanNo").val();
+                if (ordType == '') alert("ChallanNo does not empty");
+                else {
+                    $("#IteamDesc").focus();                   
+                }
+                return false;
+            }
+
+        });
+
+        $("#IteamDesc").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#IteamDesc").val();
+                if (ordType == '') alert("IteamDesc does not empty");
+                else {
+                    $("#CostPrice").val('');
+                    $("#Quantity").val('');
+                    $("#Quantity").focus();
+                }
+                return false;
+            }
+
+        });
+
+        $("#Quantity").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#IteamSLNo").val();
+                if (ordType == '') alert("IteamType does not empty");
+                else {
+                    //var iteamVar = $("#IteamSLNo").val() + '|';
+                    $("#CostPrice").val('');
+                    $("#CostPrice").focus();
+                }
+                return false;
+            }
+
+        });
+
+        $("#CostPrice").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#CostPrice").val();
+                if (ordType == '') alert("IteamType does not empty");
+                else {
+
+                    $("#btn[value=Save]").focus();
+                }
+                return false;
+            }
+
+        });
+
+
+        //-------------------------------------------------------
+
+        $("#btn[value=Save]").click(function (event) {
+            var btnValue = $("#btn[value=Save]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return feild_validity();
+            }
+            else {
+                return false;
+            }
+
+        });
+
+        function feild_validity() {
+
+            var verModelCode = $("#ModelCode").val();
+            var verChallanNo = $("#ChallanNo").val();
+            var verIteamDesc = $("#IteamDesc").val();
+            var verQuantity = $("#Quantity").val();
+            var verCostPrice = $("#CostPrice").val();
+
+            if (verModelCode == '') {
+                alert('Model not selected...');
+                $("#ModelCode").focus();
+                return false;
+            }
+            else if (verChallanNo == '') {
+                alert('Challan Number does not empty...');
+                $("#ChallanNo").focus();
+                return false;
+            }
+            else if (verIteamDesc == '') {
+                alert('Desc does not empty...');
+                $("#IteamDesc").focus();
+                return false;
+            }
+            else if (verQuantity == '' || verQuantity == '0') {
+                alert('Quantity does not empty...');
+                $("#Quantity").focus();
+                return false;
+            }
+            else if (verCostPrice == '0' || verCostPrice == '') {
+                alert('Cost does not empty...');
+                $("#CostPrice").focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        $("#btn[value=Delete]").click(function (event) {
+            var btnValue = $("#btn[value=Delete]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                var ordType = $("#IteamCode").val();
+                if (ordType == '') {
+                    alert('Entry Item Code for delete...');
+                    $("#IteamCode").focus();
+                    return false;
+                }
+                else
+                    return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Search]").click(function (event) {
+            var btnValue = $("#btn[value=Search]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                var ordType = $("#IteamCode").val();
+                if (ordType == '') {
+                    alert('Entry Item Code for delete...');
+                    $("#IteamCode").focus();
+                    return false;
+                }
+                else
+                    return true;
+            }
+            else return false;
+
+        });
+
+
+        $("#btn[value=Clear]").click(function (event) {
+            var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Update]").click(function (event) {
+            var btnValue = $("#btn[value=Update]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return feild_validity();
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Exit]").click(function (event) {
+            var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Stockin Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Stockin Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Stockin Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+    });        
+        
+</script> 
+}
+
+<form action="/Inventory/Stockin" method="post">
+    <div class="row container padding-top padding-bottom" style="width:95%">
+    <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+    <div class = "panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center"> <h4>Inventory Stockin</h4> </div>
+            <div class="panel-body">
+         <div class="row p-1 mb-1">
+            <div class="col-md-4"><label asp-for="IteamCode" class="control-label"></label></div>
+                    <div class="col-md-8">
+                        <input type="text" asp-for="IteamCode" class="form-control w-50 rounded-1" />
+                        <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+            </div>    
+        </div>
+        <hr/>
+                <div class="row mb-1">
+                    <div class="col-md-4"><label asp-for="BrandCode" class="control-label"></label></div>
+                    <div class="col-md-8">
+                    <select asp-for="BrandCode" class="form-select form-select-lg text-md-end w-50" asp-items="@(new SelectList(Model.BrandList, "Value", "Text"))"> </select>
+                    </div>
+        </div>
+
+                <div class="row mb-1">
+                    <div class="col-4"><label asp-for="ModelCode" class="control-label"></label></div>
+                    <div class="col-8">
+                        <select asp-for="ModelCode" class="form-select form-select-lg text-md-end w-50" asp-items="@(new SelectList(Model.ModelList, "Value", "Text"))"> </select>
+                    </div>
+        </div>
+
+                <div class="row mb-2">
+                     <div class="col-4"><label asp-for="ChallanNo" class="control-label"></label></div>
+                     <div class="col-8"><input type="text" asp-for="ChallanNo"  class="form-control w-50"/> </div>                       
+        </div>
+
+                <div class="row mb-2">
+                    <div class="col-4"><label asp-for="IteamDesc" class="control-label"></label></div>
+                    <div class="col-8"><input type="textarea" asp-for="IteamDesc"  class="form-control w-100"/> </div>    
+        </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label asp-for="Quantity" class="control-label"></label></div>
+                    <div class="col-8"><input type="text" asp-for="Quantity"  class="form-control w-50"/> </div>
+        </div>
+                <div class="row mb-1">
+                    <div class="col-4"><label asp-for="CostPrice" class="control-label"></label></div>
+                    <div class="col-8"><input type="text" asp-for="CostPrice"  class="form-control w-50"/> </div>
+        </div>   
+        <div class="row mb-2">
+                    <div class="col-4"></div>
+                    <div class="col-4 btn-group p-3" role="group" > 
+                        <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Save">Save</button>
+                        <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                        <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                    </div>
+        </div>
+        <div>
+     </div>
+    </div>
+</div>
+
+<div class="panel panel-responsive bg-light mt-2 p-2 rounded-2">
+       <div style="overflow-y: scroll; height:250px; position:relative;"> 
+       <table class="listTable w-100">
+       <thead>
+       <tr class="bg-black-gradient h-100">
+       <td>Tran #</td>
+       <td>Brand</td>
+       <td>Product Name</td>
+       <td>Quantity</td>
+       <td>Price</td>
+       <td>Challan#</td>
+       <td>User</td>
+       <td>Date</td>
+       </tr>
+       </thead>       
+       <tbody id="tblList">            
+          @if (Model.IteamList != null)
+            {
+                for (var i = 0; i < Model.IteamList.Count; i++)
+                {
+            <tr>               
+                <td style="border-top: 1px dotted; background-color:#9FDAFF;">@(Html.DisplayFor(m => m.IteamList[i].IteamCode))</td>
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].VendorName))</td>
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].ModelName))</td>                 
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].Quantity))</td> 
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].CostPrice))</td> 
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].ChallanNo))</td> 
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].EntryBy))</td> 
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].EntryDate))</td> 
+
+                
+             </tr>                 
+            }
+                    
+            }
+             </tbody>
+        <tfoot>
+       <tr class="bg-black-gradient h-100">
+       <td>Tran #</td>
+                            <td>Brand</td>
+       <td>Product Name</td>
+       <td>Quantity</td>
+       <td>Price</td>
+       <td>Challan#</td>
+       <td>User</td>
+       <td>Date</td>
+       </tr>
+       </tfoot>            
+       </table>       
+        </div>        
+</div>
+     
+</div>
+
+</form>

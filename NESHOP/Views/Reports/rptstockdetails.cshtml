@@ -1,0 +1,98 @@
+@model NeSHOP.Models.ReportsModel
+
+@section HeadContent { 
+<script type="text/javascript">
+
+    $(function () {
+
+        $("#FromDate").datepicker({ dateFormat: "yy-mm-dd" }).val();
+        $("#ToDate").datepicker({ dateFormat: "yy-mm-dd" }).val();
+
+        $("#FromDate").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#ToDate").focus();
+                return false;
+            }
+        });
+        $("#ToDate").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                $("#btn[value=Preview]").focus();
+                return false;
+            }
+        });
+
+        $("#btn[value=Preview]").click(function (event) {
+            var btnValue = $("#btn[value=Preview]").val(); // "Save";
+            var rType = $("#ReportType:checked").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                var qString = rType + '-' + $("#FromDate").val() + '-' + $("#ToDate").val();
+                // alert(rType);
+                switch (rType) {
+                    case '1':
+                        //window.showModalDialog('/Reports/Rpt_ReservationReport/' + qString, "wndPopUp", 'width=1000,height=1000');
+                        window.open('/Reports/Rpt_RptDailyBuyTran/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+
+                        break;
+                    case '2':
+                        window.open('/Reports/Rpt_RptDailySalesTran/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+                        break;
+                    case '3':
+                        window.open('/Reports/Rpt_RptDailyProdInTran/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+                        break;
+                    case '4':
+                        window.open('/Reports/Rpt_RptDailyProdOutTran/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+                        break;
+                    default:
+                        alert('Select Report Type first....');
+                        break;
+                }
+                return false;
+            }
+            else return false;
+
+        });
+
+    });	    	    
+	</script> 
+}
+@section MainContent { 
+@using (Html.BeginForm())
+     {
+        <div>
+            <fieldset>
+                <legend>Transaction Report</legend>  
+                <table width="100%">
+                <tr>
+                <td style=" vertical-align:top;">
+                   @(Html.RadioButtonFor(m => m.ReportType, '1', 1))  Stock In Report<br />
+                   @(Html.RadioButtonFor(m => m.ReportType, '2', 2))  Stock Out Report <br />
+                   @(Html.RadioButtonFor(m => m.ReportType, '3', 3))  Producttion In <br />
+                   @(Html.RadioButtonFor(m => m.ReportType, '4', 4))  Producttion Out <br />
+                </td>
+                <td>             
+                <table width="100%">
+                
+                <tr>
+                    <td class="editor-label">@(Html.LabelFor(m => m.FromDate))</td>
+                    <td class="editor-field">@(Html.EditorFor(m => m.FromDate))</td>
+                </tr>
+                <tr>
+                    <td class="editor-label">@(Html.LabelFor(m => m.ToDate))</td>
+                    <td class="editor-field">@(Html.EditorFor(m => m.ToDate))</td>
+                </tr>
+                <tr>
+                <td colspan="2" style=" text-align:center;">
+                            <button type="submit" id="btn" name="btn" value="Preview" >Preview</button>
+                            <button type="submit" id="btn" name="btn" value="Clear" >Clear</button>
+                            <button type="submit" id="btn" name="btn" value="Exit" >Exit</button>
+                        </td>  
+                </tr>
+                </table>    
+                </td>  
+                </tr>
+                </table>          
+            </fieldset>
+        </div>
+    } 
+}

@@ -1,0 +1,477 @@
+@model NeSHOP.Models.AcTranModel
+
+@{
+    ViewData["Title"] = "Voucher Receive";
+}
+
+
+@section Scripts{
+<script type="text/javascript">
+
+    $(function () {
+        $("#CustomerCode").focus();
+        //$("#CollectionDate").datepicker({ dateFormat: "yy-mm-dd" }).val();
+        //$("#InvoiceDate").datepicker({ dateFormat: "yy-mm-dd" }).val();
+        //$("#ChequeDate").datepicker({ dateFormat: "yy-mm-dd" }).val();
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                startDate: '-3y',
+                Default: true
+            });
+
+        $("#CustomerCode").change(function () {
+            var ordType = $("#CustomerCode").val();
+            if (ordType == '') alert("CustomerCode does not empty");
+            else {
+                var url = '@Url.Content("~/")' + "Account/JfuncInvoiceList";
+                var ddlsource = "#CustomerCode";
+                var ddltarget = "#InvoiceNo";
+                $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                    $(ddltarget).empty();
+                    $.each(data, function (index, optionData) {
+                        $(ddltarget).append("<option value='" + optionData.value + "'>" + optionData.text + "</option>");
+                    });
+                });
+
+                $("#InvoiceNo").focus();
+            }
+            return false;
+
+        });
+        $("#InvoiceNo").change(function () {
+            var ordType = $("#InvoiceNo").val();
+            if (ordType == '') {
+                alert("InvoiceNo does not empty");
+                $("#InvoiceNo").focus();
+            }
+            else {
+                
+                var url = '@Url.Content("~/")' + "Account/JfuncInvoiceInfo";
+                var ddlsource = "#InvoiceNo";
+                $("#InvoiceDate").val('');
+                $("#TAmount").val('');
+                $("#TPAmount").val('');
+                $("#TDAmount").val('');
+                $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                    $("#InvoiceDate").val(data.displayInvoiceDate);
+                    $("#TAmount").val(data.netAmount);
+                    $("#TPAmount").val(datapPaidAmount);
+                    $("#TDAmount").val(datadDueAmount);
+                });
+                $("#MoneyReceptNo").focus();
+            }
+            return false;
+
+        });
+
+        $("#TAmount").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#TAmount").val();
+                if (ordType == '') alert("Total Amount does not empty");
+                else {
+                    $("#TPAmount").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#TPAmount").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#TPAmount").val();
+                if (ordType == '') alert("Total Paid Amount does not empty");
+                else {
+                    $("#TDPAmount").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#TDAmount").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#TDAmount").val();
+                if (ordType == '') alert("Total Paid Amount does not empty");
+                else {
+                    $("#MoneyReceptNo").val('');
+                    $("#MoneyReceptNo").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#MoneyReceptNo").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#MoneyReceptNo").val();
+                if (ordType == '') alert("Money Recept No does not empty");
+                else {
+                    $("#CollectionDate").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#CollectionDate").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#CollectionDate").val();
+                if (ordType == '') alert("Collection Date does not empty");
+                else {
+                    $("#CollectedBy").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#CollectedBy").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#CollectedBy").val();
+                if (ordType == '') alert("Collected By does not empty");
+                else {
+                    $("#CollectedAmount").val('');
+                    $("#CollectedAmount").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#CollectedAmount").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#CollectedAmount").val();
+                if (ordType == '') {
+                    $("#CollectedAmount").focus();
+                    alert("Collected Amount does not empty");
+                }
+                else {
+                    var netAmount = $("#TDAmount").val();
+                    var pAmount = $("#CollectedAmount").val();
+                    var dAmount = netAmount - pAmount;
+                    //alert(dAmount);
+                    if (dAmount < 0) alert('Paid Amount does not greater then due amount');
+                    else $("#RemainingAmount").val(dAmount);
+                    $("#PaymentType").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#PaymentType").change(function () {
+            var pType = $("#PaymentType").val();
+            //alert(pType);
+            if (pType == '1001')
+                $("#TranStatus").focus();
+            else if (pType == '1002')
+                $("#ChequeNumber").focus();
+            else
+                $("#ChequeDate").focus();
+
+            return false;
+        });
+
+        $("#PaymentType").keypress(function (event) {
+            if (event.which == 13) {
+                var pType = $("#PaymentType").val();
+                //alert(pType);
+                if (pType == '1001') {
+                    $("#ChequeNumber").val('0');
+                    $("#ChequeDetails").val('None');
+                    $("#TranStatus").focus();
+                }
+                else if (pType == '1002')
+                    $("#ChequeNumber").focus();
+                else {
+                    $("#ChequeNumber").val('0');
+                    $("#ChequeDate").focus();
+                }
+
+                return false;
+            }
+        });
+
+        $("#ChequeNumber").keypress(function (event) {
+            if (event.which == 13) {
+                $("#ChequeDate").focus();
+
+                return false;
+            }
+
+        });
+        $("#ChequeDate").keypress(function () {
+            if (event.which == 13) {
+                $("#ChequeDetails").focus();
+
+                return false;
+            }
+            //return false;
+        });
+        $("#ChequeDetails").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranStatus").focus();
+                return false;
+            }
+
+        });
+
+        $("#TranStatus").keypress(function (event) {
+            if (event.which == 13) {
+                $("#btn[value=Save]").focus();
+                return false;
+            }
+        });
+
+        //-------------------------------------------------------
+
+        $("#btn[value=Save]").click(function (event) {
+            var btnValue = $("#btn[value=Save]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return feild_validity();
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Clear]").click(function (event) {
+            var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Exit]").click(function (event) {
+            var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+
+        function feild_validity() {
+
+            var verCustomerCode = $("#CustomerCode").val();
+            var verInvoiceNo = $("#InvoiceNo").val();
+            var verMoneyReceptNo = $("#MoneyReceptNo").val();
+            var verCollectedBy = $("#CollectedBy").val();
+            var verCollectedAmount = $("#CollectedAmount").val();
+            var verPaymentType = $("#PaymentType").val();
+            var verTranStatus = $("#TranStatus").val();
+
+            if (verCustomerCode == '') {
+                alert('Customer not selected...');
+                $("#CustomerCode").focus();
+                return false;
+            }
+            else if (verInvoiceNo == '') {
+                alert('Invoice must select....');
+                $("#InvoiceNo").focus();
+                return false;
+            }
+            else if (verMoneyReceptNo == '') {
+                alert('Money Recept No not empty...');
+                $("#MoneyReceptNo").focus();
+                return false;
+            }
+            else if (verCollectedBy == '') {
+                alert('Collected By does not empty...');
+                $("#CollectedBy").focus();
+                return false;
+            }
+            else if (verCollectedAmount == '' || verCollectedAmount == '0') {
+                alert('Collected Amount does not empty...');
+                $("#CollectedAmount").val('');
+                $("#CollectedAmount").focus();
+                return false;
+            }
+            else if (verPaymentType == '') {
+                alert('Payment Type does not empty...');
+                $("#PaymentType").focus();
+                return false;
+            }
+            else if (verTranStatus == '') {
+                alert('Tran Status Type does not empty...');
+                $("#TranStatus").focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Operation Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Operation Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Operation Data Exception...!!", { withTime: true, type: 'danger', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+    });        
+        
+</script> 
+}
+
+
+<form action="/Account/accountsreport" method="post"> 
+    <div class="row container padding-top padding-bottom" style="width:95%">
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>Bill Received</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row pt-3">
+                    <div class="col-6">
+                         <div class="row mb-1">
+                            <div class="col-4"><label asp-for="CustomerCode" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="CustomerCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.CustomerList, "Value", "Text"))"> </select>
+                                <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="InvoiceNo" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="InvoiceNo" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.InvoiceList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>                                     
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="InvoiceDate" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="InvoiceDate" class="datepicker form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="TAmount" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="TAmount" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="TPAmount" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="TPAmount" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="TDAmount" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="TDAmount" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ChequeNumber" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="ChequeNumber" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ChequeDate" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="ChequeDate" class="datepicker form-control w-50" /> </div>
+                        </div>
+                            <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ChequeDetails" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="ChequeDetails" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.BankList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>          
+                        
+                    </div>
+                    <div class="col-6">
+                        <div class="row pt-4 mb-1">
+                            
+                        </div>
+                        <div class="row pt-4 mb-1">
+                            <div class="col-4"><label asp-for="MoneyReceptNo" class="control-label"></label></div>
+                            <div class="col-8">
+                                <input type="text" asp-for="MoneyReceptNo" class="form-control w-50" />
+                            </div>
+                        </div>                                     
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="CollectionDate" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="CollectionDate" class="datepicker form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="CollectedBy" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="CollectedBy" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.EmpList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="CollectedAmount" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="CollectedAmount" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="RemainingAmount" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="RemainingAmount" class="form-control w-50" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="PaymentType" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="PaymentType" class="form-select form-select-lg w-50" asp-items="@(new SelectList(Model.PaymentTypeList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="TranStatus" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="TranStatus" class="form-select form-select-lg w-50" asp-items="@(new SelectList(Model.TranStatusList, "Value", "Text"))"> </select>
+                            </div>
+                        </div> 
+                        <div class="row pt-2">
+                            <div class="col-12 btn-group p-3" role="group">
+                                <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Save">Save</button>
+                                <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                                <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                       
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-responsive bg-light mt-2 p-2 rounded-2">
+            <div style="overflow-y: scroll; height:250px; position:relative;">
+                <table class="listTable w-100">
+                    <thead>
+                        <tr class="bg-black-gradient h-100">
+                            <td>Tran #</td>
+                            <td>Customer</td>
+                            <td>Invoice#</td>
+                            <td>Invoice Date</td>
+                            <td>Receipt #</td>
+                            <td>Tran Amount</td>
+                            <td>Status</td>
+                            <td>Cheque Details</td>
+                        </tr>
+                        </thead>
+                        <tbody id="tblList">  
+                            @for (var i = 0; i < Model.AcTranList.Count; i++)
+                                    {
+                                    <tr>            
+                                    <td>@(Html.DisplayFor(m => m.AcTranList[i].TranNo))</td>
+                                    <td style="max-width:250px;">@(Html.DisplayFor(m => m.AcTranList[i].Customer)) </td>
+                                    <td>@(Html.DisplayFor(m => m.AcTranList[i].InvoiceNo)) </td>
+                                    <td>@(Html.DisplayFor(m => m.AcTranList[i].TranDate)) </td>
+                                        <td>@(Html.DisplayFor(m => m.AcTranList[i].MoneyReceptNo)) </td>
+                                        <td>@(Html.DisplayFor(m => m.AcTranList[i].TAmount)) </td>
+                                        <td>@(Html.DisplayFor(m => m.AcTranList[i].Status)) </td>
+                                        <td style="max-width:200px;">@(Html.DisplayFor(m => m.AcTranList[i].ChequeNumber)), @(Html.DisplayFor(m => m.AcTranList[i].ChequeDetails)),@(Html.DisplayFor(m => m.AcTranList[i].ChequeDate))  </td>
+                                    </tr>         
+                                    }          
+                            </tbody>         
+                        <tfoot>
+                        <tr class="bg-black-gradient h-100">
+                            <td>Tran #</td>
+                            <td>Customer</td>
+                            <td>Invoice#</td>
+                            <td>Invoice Date</td>
+                            <td>Receipt #</td>
+                            <td>Tran Amount</td>
+                            <td>Status</td>
+                            <td>Cheque Details</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+
+

@@ -1,0 +1,386 @@
+@model NeSHOP.Models.ChallanModels
+
+@{
+    ViewData["Title"] = "Challan Modify";
+}
+
+@section Scripts{
+<script type="text/javascript">
+
+    $(function () {
+        $("#ChallanNo").focus();
+        //$("#ChallanDate").datepicker({ dateFormat: "yyyy-mm-dd" }).val();
+
+        $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                startDate: '-3d',
+                Default: true
+         });
+
+
+        $("#ChallanNo").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#ChallanNo").val();
+                //alert(ordType.length);
+                if (ordType == '' || ordType.length > 8) {
+                    alert("Challan No is not valid....");
+                    $("#ChallanNo").focus();
+                }
+                else {
+                        var url = '@Url.Content("~/")' + "Transaction/JfuncChallanItemList";
+                    var ddlsource = "#ChallanNo";
+                    var ddltarget = "#ChallanIteam";
+                    $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                        $(ddltarget).empty();
+                        $.each(data, function (index, optionData) {
+                            $(ddltarget).append("<option value='" + optionData.value + "'>" + optionData.text + "</option>");
+                        });
+                    });
+                    $("#ChallanIteam").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#ChallanIteam").change(function () {
+            var ordType = $("#ChallanIteam").val();
+            if (ordType == '') alert("Challan Iteam does not empty");
+            else {
+                $("#btn[value=Search]").click();
+            }
+            return false;
+
+        });
+
+
+        $("#CustomerCode").change(function () {
+            var ordType = $("#CustomerCode").val();
+            if (ordType == '') alert("CustomerCode does not empty");
+            else {
+                $("#PONo").focus();
+            }
+            return false;
+
+        });
+
+        $("#PONo").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#PONo").val();
+                if (ordType == '') {
+                    alert("PONo does not empty");
+                    $("#ChallanRemarks").focus();
+                }
+                else {
+                    $("#ChallanRemarks").focus();
+                }
+                return false;
+            }
+
+        });
+        $("#ChallanRemarks").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#ChallanRemarks").val();
+                if (ordType == '') {
+                    alert("ChallanRemarks does not empty");
+                    $("#CatagoryCode").focus();
+                }
+                else {
+                    $("#CatagoryCode").focus();
+                }
+                return false;
+            }
+        });
+
+
+        $("#BrandCode").change(function () {
+                var url = '@Url.Content("~/")' + "Inventory/JfuncModelList";
+            var ddlsource = "#BrandCode";
+            var ddltarget = "#ModelCode";
+            $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                $(ddltarget).empty();
+                $.each(data, function (index, optionData) {
+                    $(ddltarget).append("<option value='" + optionData.value + "'>" + optionData.text + "</option>");
+                });
+            });
+            $("#ModelCode").focus();
+            return false;
+        });
+
+        $("#ModelCode").change(function () {
+                var url = '@Url.Content("~/")' + "Transaction/JfuncModelDesc";
+            var ddlsource = "#ModelCode";
+            var ddltarget = "#ModelDesc";
+            $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                $(ddltarget).empty();
+                $(ddltarget).val(data[0].toString());
+            });
+            $("#ModelDesc").focus();
+            return false;
+
+        });
+
+        $("#ModelDesc").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#ModelDesc").val();
+                if (ordType == '') alert("ModelDesc does not empty");
+                else {
+                    $("#Quantity").val('');
+                    $("#Quantity").focus();
+                }
+                return false;
+            }
+
+        });
+
+        $("#Quantity").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#Quantity").val();
+                if (ordType == '') {
+                    alert("Quantity does not empty");
+                    $("#Quantity").focus();
+                }
+                else {
+                        var url = '@Url.Content("~/")' + "Transaction/JfuncModelSlNo";
+                    var ddlsource = "#Quantity";
+                    var ddlsource2 = "#ModelCode";
+                    var ddltarget = "#Quantity";
+                    $.getJSON(url, { Sel_StateName: $(ddlsource).val() + '+' + $(ddlsource2).val() }, function (data) {
+                        $(ddltarget).empty();
+                        $(ddltarget).val(data.toString());
+                    });
+                    if ($(ddltarget).val() != '0') {
+                        //$("#IteamSLNo2").val('');
+                        $("#btn[value=Add]").focus();
+                    }
+                    else {
+                        alert("Stock is not avilable..........");
+                        $("#Quantity").focus();
+                    }
+                }
+                return false;
+            }
+        });
+
+        $("#ChallanNo").keypress(function (event) {
+            if (event.which == 13) {
+                var ordType = $("#ChallanNo").val();
+                if (ordType == '') alert("Challan Number does not empty");
+                
+                return false;
+            }
+
+        });
+
+        //-------------------------------------------------------
+
+        $("#btn[value=Add]").click(function (event) {
+            var btnValue = $("#btn[value=Add]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                if (feild_validity())
+                    return true;
+                else {
+                    alert('Insert Data is not valid.....');
+                    return false;
+                }
+
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Search]").click(function (event) {
+            return true;
+        });
+
+        $("#btn[value=Delete]").click(function (event) {
+            var btnValue = $("#btn[value=Delete]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+
+                var ordType = $("#ChallanNo").val();
+                if (ordType == '') {
+                    alert('Challan number does not empty.....');
+                    $("#ChallanNo").focus();
+                    return false;
+                }
+                else
+                    return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Clear]").click(function (event) {
+            var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Exit]").click(function (event) {
+            var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        function feild_validity() {
+
+            var verCustomerCode = $("#CustomerCode").val();
+            var verCatagoryCode = $("#CatagoryCode").val();
+            var verProductCode = $("#ProductCode").val();
+            var verVendorCode = $("#VendorCode").val();
+            var verModelCode = $("#ModelCode").val();
+            var verModelDesc = $("#ModelDesc").val();
+            var verIteamSLNo = $("#IteamSLNo").val();
+            //alert(verCustomerCode);
+            if (verCustomerCode == '') {
+                alert('Customer not selected...');
+                $("#CustomerCode").focus();
+                return false;
+            }
+            else if (verCatagoryCode == '') {
+                alert('Catagory not selected...');
+                $("#CatagoryCode").focus();
+                return false;
+            }
+            else if (verProductCode == '') {
+                alert('Product not selected...');
+                $("#ProductCode").focus();
+                return false;
+            }
+            else if (verModelCode == '') {
+                alert('Model not selected...');
+                $("#ModelCode").focus();
+                return false;
+            }
+            else if (verModelDesc == '') {
+                alert('Model Description does not empty...');
+                $("#ModelDesc").focus();
+                return false;
+            }
+            else if (verIteamSLNo == '') {
+                alert('Serial Number does not empty...');
+                $("#IteamSLNo").focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Operation Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+
+                var qString = '2-' + $("#SuccessStat").val();
+                        //alert(qString);
+                window.open('/Reports/Rpt_ChallanReport/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Operation Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Operation Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+
+
+    });          
+        
+</script> 
+}
+
+
+<form action="/Transaction/challanmodfy" method="post"> 
+    <div class="row container padding-top padding-bottom">
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>Challan Modify</h4> 
+            </div>
+            <div class="panel-body" style="width:95%">
+                <div class="row col-12 col-lg-6">
+                    <div class="row p-1 pt-3 mb-1">
+                        <div class="col-md-4"><label asp-for="ChallanNo" class="control-label"></label></div>
+                        <div class="col-md-4">
+                            <input type="text" asp-for="ChallanNo" class="form-control w-100" />
+                            <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+                            <input type="hidden" id="ChallanTranno" value="@ViewData["ChallanTranno"]" />
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary btn-sm" id="btn" name="btn" value="Search">Search</button>
+                        </div>
+                    </div> 
+                    <div class="row mb-2">
+                        <div class="col-4"><label asp-for="ChallanIteam" class="control-label"></label></div>
+                        <div class="col-8">
+                            <select asp-for="ChallanIteam" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.ChallanIteamList, "Value", "Text"))"> </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-4"><label asp-for="ChallanDate" class="control-label"></label></div>
+                        <div class="col-8"><input type="text" asp-for="ChallanDate" class="datepicker form-control w-50" /> </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-4"><label asp-for="CustomerCode" class="control-label"></label></div>
+                        <div class="col-8">
+                            <select asp-for="CustomerCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.CustomerList, "Value", "Text"))"> </select>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><label asp-for="PONo" class="control-label"></label></div>
+                        <div class="col-8"><input type="text" asp-for="PONo" class="form-control w-100" /> </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><label asp-for="ChallanRemarks" class="control-label"></label></div>
+                        <div class="col-8"><input type="text" asp-for="ChallanRemarks" class="form-control w-100" /> </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><label asp-for="BrandCode" class="control-label"></label></div>
+                        <div class="col-8">
+                            <select asp-for="BrandCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.BrandList, "Value", "Text"))"> </select>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><label asp-for="ModelCode" class="control-label"></label></div>
+                        <div class="col-8">
+                             <select asp-for="ModelCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.ModelList, "Value", "Text"))"> </select>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><label asp-for="ModelDesc" class="control-label"></label></div>
+                        <div class="col-8">
+                             <input type="text" asp-for="ModelDesc" class="form-control w-100" />
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-4"><label asp-for="Quantity" class="control-label"></label></div>
+                        <div class="col-8">
+                             <input type="text" asp-for="Quantity" class="form-control w-50" />
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-0 col-lg-2"></div>
+                        <div class="col-lg-10 col-12 btn-group p-3" role="group">
+                            <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Add"><span style=" color: Green; font-weight:bold;">Add to Curt</span></button>
+                            <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Save">Save</button>
+                            <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                            <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+

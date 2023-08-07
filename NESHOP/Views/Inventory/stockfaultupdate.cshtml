@@ -1,0 +1,287 @@
+@model NeSHOP.Models.IteamModels
+
+@section HeadContent{
+    <script type="text/javascript">
+
+        $(function () {
+            $("#ModelCode").focus();
+            $("#ModelCode").change(function () {
+                var ordType = $("#ModelCode").val();
+                if (ordType == '') alert("ModelCode does not empty");
+                else {
+                    $("#IteamSLNo").focus();
+                }
+                return false;
+
+            });
+
+            $("#IteamSLNo").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#IteamSLNo").val();
+                    if (ordType == '') alert("IteamType does not empty");
+                    else {
+                        //var iteamVar = $("#IteamSLNo").val() + '|';
+                        //$("#IteamSLNo").val(iteamVar);
+                        $("#fStatus").focus();
+                    }
+                    return false;
+                }
+
+            });
+
+            $("#fStatus").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#CostPrice").val();
+                    if (ordType == '') alert("IteamType does not empty");
+                    else {
+
+                        $("#btn[value=Save]").focus();
+                    }
+                    return false;
+                }
+
+            });
+
+            //-------------------------------------------------------
+
+            $("#btn[value=Save]").click(function (event) {
+                var btnValue = $("#btn[value=Save]").val(); // "Save";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    return feild_validity();
+                }
+                else {
+                    return false;
+                }
+
+            });
+
+            function feild_validity() {
+
+                var verModelCode = $("#ModelCode").val();
+                var verIteamSLNo = $("#IteamSLNo").val();
+                //var verfStatus = $("#fStatus").val();
+                if (verModelCode == '') {
+                    alert('Model not selected...');
+                    $("#ModelCode").focus();
+                    return false;
+                }
+                else if (verIteamSLNo == '') {
+                    alert('Serial Number does not empty...');
+                    $("#IteamSLNo").focus();
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+
+
+            $("#btn[value=Search]").click(function (event) {
+                var btnValue = $("#btn[value=Search]").val(); // "Save";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    var ordType = $("#ModelCode").val();
+                    if (ordType == '') {
+                        alert('Entry Item Code for delete...');
+                        $("#ModelCode").focus();
+                        return false;
+                    }
+                    else
+                        return true;
+                }
+                else return false;
+
+            });
+
+            $("#btn[value=Preview]").click(function (event) {
+                var btnValue = $("#btn[value=Preview]").val(); // "Save";
+                //var rType = $("#SearchType:checked").val(); // "Save";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    var qString = $("#ModelCode").val() + '+' + $("#IteamSLNo").val();
+                    //alert(qString);
+                    window.open('/Reports/Rpt_StockFaultySearch/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+                }
+                return false;
+            });
+
+            $("#btn[value=Clear]").click(function (event) {
+                var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    return true;
+                }
+                else return false;
+
+            });
+
+            $("#btn[value=Update]").click(function (event) {
+                var btnValue = $("#btn[value=Update]").val(); // "Clear";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    return feild_validity();
+                }
+                else return false;
+
+            });
+
+            $("#btn[value=Exit]").click(function (event) {
+                var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    return true;
+                }
+                else return false;
+
+            });
+
+        });
+
+    </script>
+
+}
+
+@section MainContent { 
+@using (Html.BeginForm()) { 
+ 
+   <fieldset class="EntryFildSet">
+   <legend>Stock Fault Update (Inventory)</legend>    
+    <table style="width: 100%; border-top-color:transparent;">
+    <tr>    
+    <td>
+    <fieldset class="fieldStyle">
+     <table style="width: 100%; table-layout:auto; ">          
+          <tr>
+            <td class="mendotory">
+                @(Html.LabelFor(m => m.ModelCode))
+      
+            </td>
+            <td>
+                     @(Html.DropDownListFor(m => m.ModelCode, Model.ModelList,new{ style="max-width:300px;"}))
+            </td>
+           
+        </tr>       
+         <tr>
+            <td class="mendotory">
+                @(Html.LabelFor(m => m.IteamSLNo))
+            
+            </td>
+            <td>
+                    @(Html.TextBoxFor(m => m.IteamSLNo, new { style = "width:100px;" })) 
+               
+            </td>
+           
+        </tr>
+         <tr>
+            <td class="mendotory">
+                @(Html.LabelFor(m => m.fStatus))
+            
+            </td>
+            <td>
+                    @(Html.CheckBoxFor(m => m.fStatus))
+               
+            </td>
+           
+        </tr>
+
+        <tr>
+            <td>
+                &nbsp;         
+            </td>
+            <td colspan="1">
+                    @*<button type="submit" id="btn" name="btn" value="Save">Save</button>*@                 
+                    <button type="submit" id="btn" name="btn" value="Search">Search</button>
+                    <button type="submit" id="btn" name="btn" value="Update">Update</button>  
+                    <button type="submit" id="btn" name="btn" value="Preview">Preview</button>
+                    <button type="submit" id="btn" name="btn" value="Clear">Clear</button>
+                    <button type="submit" id="btn" name="btn" value="Exit">Exit</button>
+            </td>            
+        </tr> 
+                
+      </table>
+      </fieldset>
+    </td>
+    </tr>
+    <tr>
+        <td>
+        <fieldset class="fieldStyle">
+        <div style="overflow-y: scroll; height:150px;"> 
+       <table>
+       <tr>
+       <td>        
+       <table class="listTable">
+       <thead>
+       <tr style="background-color:#99DAF9;">      
+       <td>Code#</td>
+       <td>Catagory</td>
+        <td>Product</td>
+       <td>Vendor</td>
+       <td>Model</td>
+       <td>SL#</td>
+       <td>Challan#</td>
+       <td>Fault Status</td>
+       </tr>
+       </thead>       
+       <tbody id="tblList">            
+       @if (Model.IteamList != null)
+            {
+                for (var i = 0; i < Model.IteamList.Count; i++)
+                {
+            <tr>               
+                <td style="border-top: 1px dotted; background-color:#9FDAFF;">@(Html.DisplayFor(m => m.IteamList[i].IteamCode))</td>
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].CatagoryName))</td>
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].ProductName))</td>
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].VendorName))</td>
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].ModelName))</td>                 
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].IteamSLNo))</td> 
+               @*<td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].CostPrice))</td>*@
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].ChallanNo))</td> 
+                <td style="border-top: 1px dotted;">@(Html.CheckBoxFor(m => m.IteamList[i].fStatus))</td> 
+@*<td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].EntryBy))</td> 
+                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.IteamList[i].EntryDate))</td>*@
+
+                
+             </tr>                 
+            }
+                    
+            }
+             </tbody>
+            
+       </table>       
+       </td>
+       </tr>        
+       </table>  
+
+        </div>        
+        </fieldset>
+        </td>
+        </tr>
+    </table>     
+</fieldset> 
+
+<div>
+                  @if (Model.MsgCode != null)
+                      {
+                          if (Model.MsgCode == "1")
+                          {
+                    <script type="text/javascript">
+                        alert("Iteam Entry Successfull............!!!!!");
+                    </script>
+                         }
+                          else if (Model.MsgCode == "2")
+                          {
+                         <script type="text/javascript">                             alert("Iteam Update Successfull............!!!!!");  </script>
+                          }
+                          else if (Model.MsgCode == "3")
+                          {
+                          <script type="text/javascript">                              alert("Data Import Fail, Please Check Valid Info....!");  </script>
+                          }
+
+                    }            
+
+            
+       </div>
+       
+       } 
+}

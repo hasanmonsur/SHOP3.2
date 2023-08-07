@@ -1,0 +1,149 @@
+@model NeSHOP.Models.VendorModels
+
+
+@{
+    ViewData["Title"] = "Brand Info";
+}
+
+@section Scripts{
+<script type="text/javascript">
+
+        $(function () {
+            $("#BrandName").focus();
+            $("#BrandCode").attr("readonly", true);
+
+            $("#SearchKey").change(function (event) {
+                $("#btn[value=Search]").click();
+                return true;
+
+            });
+
+            $("#BrandName").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#VenName").val();
+                    if (ordType == '') alert("Brand does not empty");
+                    else {
+                        $("#SupplierCode").focus();
+                    }
+                    return false;
+                }
+            });
+
+            $("#SupplierCode").change(function (event) {
+                $("#btn[value=Save]").focus();
+                return false;
+
+            });
+
+            $("#btn[value=Save]").click(function (event) {
+                var btnValue = $("#btn[value=Save]").val(); // "Save";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+
+                    return true;
+                }
+                else return false;
+
+            });
+
+
+
+            $("#btn[value=Delete]").click(function (event) {
+                var btnValue = $("#btn[value=Delete]").val(); // "Save";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+
+                    return true;
+                }
+                else return false;
+
+            });
+
+            $("#btn[value=Clear]").click(function (event) {
+                var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    return true;
+                }
+                else return false;
+
+            });
+
+            $("#btn[value=Exit]").click(function (event) {
+                var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    return true;
+                }
+                else return false;
+
+            });
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Execution Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Execution Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Execution Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+        });
+
+    </script>
+
+}
+
+
+<form action="/Settings/vendorinfo" method="post"> 
+
+    <div class="row container padding-top padding-bottom" >
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>Brand Manage</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row pt-3">
+                    <div class="col-6">
+                        <div class="row mb-1 form-group m-2">
+                            <div class="col-12 border rounded-1 pt-2 pb-2">
+                                <select asp-for="SearchKey" size="12" multiple class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.BrandList, "Value", "Text"))"> </select>
+                            </div>
+                        </div> 
+                    </div>
+
+                    <div class="col-6 pt-3">
+                         <div class="row mb-1">
+                            <div class="col-4"><label asp-for="BrandCode" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="BrandCode" class="form-control w-100" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="BrandName" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="BrandName" class="form-control w-100" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="SupplierCode" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="SupplierCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.SupplierList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-12 btn-group p-3" role="group">
+                                <button type="submit" class="btn btn-primary btn-sm" id="btn" name="btn" value="Search">Search</button>
+                                <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Save">Save</button>
+                                <button type="submit" class="btn btn-warning btn-sm" id="btn" name="btn" value="Update">Update</button>
+                                <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Delete">Delete</button>
+                                <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                                <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                       
+            </div>
+        </div>
+    </div>
+</form>
+

@@ -1,0 +1,217 @@
+@model NeSHOP.Models.IteamModelModels
+
+@{
+    ViewBag.Title = "Add New Item";
+    Layout = "~/Views/Shared/_LayoutPopup.cshtml";
+}
+
+
+@section Scripts{
+<script type="text/javascript">
+
+        $(function () {
+            $("#CatagoryCode").focus();
+            $("#ModelCode").attr("readonly", true);
+
+            $("#SearchKey").change(function (event) {
+                //alert('Hello');
+                $("#btn[value=Search]").click();
+
+                return true;
+
+            });
+
+            $("#CatagoryCode").change(function () {
+                var url = '@Url.Content("~/")' + "Settings/JfuncProductList";
+                var ddlsource = "#CatagoryCode";
+                var ddltarget = "#ProductCode";
+                $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                    $(ddltarget).empty();
+                    $.each(data, function (index, optionData) {
+                        $(ddltarget).append("<option value='" + optionData.Value + "'>" + optionData.Text + "</option>");
+                    });
+                });
+                $("#ProductCode").focus();
+                return false;
+            });
+
+            $("#ProductCode").change(function () {
+                var url = '@Url.Content("~/")' + "Settings/JfuncVenList";
+                var ddlsource = "#ProductCode";
+                var ddltarget = "#VenCode";
+                $.getJSON(url, { Sel_StateName: $(ddlsource).val() }, function (data) {
+                    $(ddltarget).empty();
+                    $.each(data, function (index, optionData) {
+                        $(ddltarget).append("<option value='" + optionData.Value + "'>" + optionData.Text + "</option>");
+                    });
+                });
+                $("#BrandCode").focus();
+                return false;
+            });
+
+            $("#BrandCode").change(function () {
+                var ordType = $("#VenCode").val();
+                if (ordType == '') alert("Product does not empty");
+                else {
+                    $("#ModelName").focus();
+                }
+                return false;
+
+            });
+
+            $("#ModelName").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#ModelName").val();
+                    if (ordType == '') alert("Brand does not empty");
+                    else {
+                        $("#ModelBName").focus();
+                    }
+                    return false;
+                }
+
+
+            });
+
+
+            $("#ModelBName").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#ModelBName").val();
+                    if (ordType == '') alert("Brand does not empty");
+                    else {
+                        $("#ModelDesc").focus();
+                    }
+                    return false;
+                }
+
+            });
+            $("#ModelDesc").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#ModelDesc").val();
+                    if (ordType == '') alert("Origin does not empty");
+                    else {
+                        ("#btn[value=Save]").focus();
+                    }
+                    return false;
+                }
+            });
+
+            $("#btn[value=Save]").click(function (event) {
+                var btnValue = $("#btn[value=Save]").val(); // "Save";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+
+                    return true;
+                }
+                else return false;
+
+            });
+
+            $("#btn[value=Search]").click(function (event) {
+                var btnValue = $("#btn[value=Search]").val(); // "Save";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+
+                    return true;
+                }
+                else return false;
+
+            });
+
+            $("#btn[value=Clear]").click(function (event) {
+                var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    return true;
+                }
+                else return false;
+
+            });
+
+            $("#btn[value=Exit]").click(function (event) {
+                var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    return true;
+                }
+                else return false;
+
+            });
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Execution Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Execution Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Execution Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+        });        
+        
+        </script>	 
+ }
+
+    
+<form action="/Settings/addnewiteam" method="post"> 
+
+    <div class="row container padding-top padding-bottom" style="width:95%">
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>New Item Entry</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row pt-3">
+                    <div class="col-6">
+                        <div class="row mb-1 form-group m-2">
+                            <div class="col-12 border rounded-1 pt-2 pb-2">
+                                <select asp-for="SearchKey" size="12" multiple class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.IteamModelList, "Value", "Text"))"> </select>
+                            </div>
+                        </div> 
+                    </div>
+
+                    <div class="col-6">
+                        <div class="row mb-1 form-group">
+                            <div class="col-4"><label asp-for="ModelCode" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="ModelCode" class="form-control w-100" /> </div>
+                        </div>`
+
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="BrandCode" class="control-label"></label></div>
+                            <div class="col-8">
+                                <select asp-for="BrandCode" class="form-select form-select-lg w-100" asp-items="@(new SelectList(Model.BrandList, "Value", "Text"))"> </select>
+                            </div>
+                        </div>                                     
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ModelName" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="ModelName" class="form-control w-100" /> </div>
+                        </div>`
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ModelBName" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="ModelBName" class="form-control w-100" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ModelDesc" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="ModelDesc" class="form-control w-100" /> </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-4"><label asp-for="ModelPrice" class="control-label"></label></div>
+                            <div class="col-8"><input type="text" asp-for="ModelPrice" class="form-control w-100" /> </div>
+                        </div>                    
+                        <div class="row mb-2">
+                            <div class="col-12 btn-group p-3" role="group">
+                                <button type="submit" class="btn btn-primary btn-sm" id="btn" name="btn" value="Search">Search</button>
+                                <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Save">Save</button>
+                                <button type="submit" class="btn btn-warning btn-sm" id="btn" name="btn" value="Update">Update</button>
+                                <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                       
+            </div>
+        </div>
+    </div>
+</form>
+

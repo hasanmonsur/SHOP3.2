@@ -1,0 +1,56 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  background-color: black;
+}
+
+.bg-image {
+    padding-bottom: -120px;
+    background: url('../images/home.png') no-repeat;
+    background-color: gainsboro;
+    /* background-position: center center; */
+    background-size: contain;
+}
+.bg-image1 {
+    padding-bottom: -120px;
+    background: url('../images/home.png') no-repeat;
+    background-size:cover;
+}
+
+
+@font-face {
+    font-family: CCode128;
+    src: url("../fonts/inFlow_CODE39_Barcode_font.ttf") format('TrueType')
+}
+
+#barcode {
+    font-weight: normal;
+    font-style: normal;
+    line-height: normal;
+    font-family: 'CCode128', sans-serif;
+    text-align: center;
+    font-size: 32px
+}
+
+#barcode_text {
+    font-weight: normal;
+    font-style: normal;
+    line-height: normal;
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 24px
+}

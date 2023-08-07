@@ -1,0 +1,108 @@
+@model NeSHOP.Models.LogOnModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+@section Scripts{
+<script type="text/javascript">
+    $(function () {
+        $("#UserId").focus();
+        $("#UserId").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                var userName = $("#UserId").val();
+                if (userName == '') {
+                    //alert("UserName does not empty");
+                   $.alert("User Name does not empty...", { withTime: true, type: 'warning', title: 'Worning:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+                }
+                else {
+                    $("#Password").focus();
+                }
+                return false;
+            }
+        });
+
+        $("#Password").keypress(function (event) {
+            if (event.which == 13 || event.which == 9) {
+                var password = $("#Password").val();
+                if (password == '') {
+                    //alert("Password does not empty");
+                   $.alert("Password does not empty...", { withTime: true, type: 'warning', title: 'Worning:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+                }
+                else {
+                    $("#btn[value=Login]").click();
+                }
+                return false;
+            }
+        });      
+
+        $("#btn[value=Login]").click(function (event) {
+            var password = $("#Password").val();
+            var userName = $("#UserId").val();
+            if (userName == '') {
+                //alert("Invalid User ID");
+                $.alert("User Name does not empty...", { withTime: true, type: 'warning', title: 'Worning:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if (password == '') {
+                //alert("Invalid Password");
+                $.alert("Password does not empty...", { withTime: true, type: 'warning', title: 'Worning:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else {
+                return true;
+            }
+        });
+
+            if ($("#SuccessStat").val() == "2") {
+                $.alert("Login Fail Please Try With Valid Identity...!!", { withTime: true, type: 'warning', title: 'Worning:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+    });
+
+    </script>
+}
+
+<form  asp-controller="Home" asp-action="Logon" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="row container padding-top padding-bottom ">
+        <div class="pt-5">
+            <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+        </div>
+        <div class="col-lg-4"></div>
+
+           <div class="col-lg-4 bg-navy-active mt-5 pb-5 rounded-2">                
+                    <div class="panel panel-info bg-navy-active mt-0 pb-0 rounded-2">
+                        <div class="panel-heading bg-blue p-2 mt-0 pb-2 rounded-2 text-center">
+                        <h4>
+                        Login Information
+                        </h4>
+                    </div>   
+                    <div class = "panel-body">           
+                      <div class="form-group ">
+                      <div class="form-group p-3 pb-3">
+                                    <label asp-for="UserId" for="UserId" class="form-label"></label>
+                                        <input asp-for="UserId" class="form-control" placeholder="Entry User" />                                            
+                     </div>
+                      <div class="form-group p-3 pb-3">
+                                    <label asp-for="Password" for="Password" class="form-label"></label>
+                                    <input asp-for="Password" class="form-control" placeholder="Entry Password" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>                                                         
+                     </div>
+                      <div class="form-group p-3">
+                     <button class="bg-olive-active btn btn-outline-success w-100" id="btn" name="btn" type="submit" value="Login"> Login </button>
+              </div>
+             </div>
+                    <div>
+                        <span class="text-center p-3">Sales360 ! Login with valid id !!!!</span>
+                    </div>
+            </div>                
+            </div>
+            </div>
+
+
+        <div class="col-lg-4"></div>
+        </div>
+        
+</form>
+

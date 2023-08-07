@@ -1,0 +1,25 @@
+@using NeSHOP.DAL
+@using NeSHOP.Models
+@using Newtonsoft.Json;
+@{
+    ViewData["Title"] = "Home";
+}
+
+        <div style="text-align:center;">
+            @{
+                var objDaoUserInfo = new DaoUserInfo();
+                var jsonLogin = Context.Session.GetString("loginStatus");
+                if (!string.IsNullOrEmpty(jsonLogin))
+                {
+                    objDaoUserInfo = JsonConvert.DeserializeObject<DaoUserInfo>(jsonLogin);
+
+                    if (objDaoUserInfo.LicenceDays < 30)
+                    {
+
+                        <script type="text/javascript">
+                            alert('Your Licence will expire as soon , Please contract with vendor...!!');
+                        </script>
+                    }
+                }
+            }
+    </div>

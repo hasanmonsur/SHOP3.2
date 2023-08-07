@@ -1,0 +1,526 @@
+@model NeSHOP.Models.TranModels
+
+@section HeadContent { 
+<script type="text/javascript">
+
+    $(function () {
+        $("#TranType").focus();
+        $("#TranNo").attr("readonly", true);
+        $("#TranDate").datepicker({ dateFormat: "yy-mm-dd" }).val();
+
+        var noRows = $('#hNoRows').val();
+
+        $("#chkOpType").change(function (event) {
+            var okCheck = $("#chkOpType");
+            if (okCheck.is(":checked")) {
+                $("#TranNo").attr("readonly", false);
+                $("#TranNo").focus();
+            }
+            else {
+                $("#TranNo").attr("readonly", true);
+                $("#TranType").focus();
+            }
+            return false;
+        });
+        $("#TranNo").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranType").focus();
+                return false;
+            }
+        });
+
+        $("#TranType").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranDate").focus();
+                return false;
+            }
+        });
+
+        $("#TranDate").keypress(function (event) {
+            if (event.which == 13) {
+                $("#VenCode").focus();
+                return false;
+            }
+        });
+
+        $("#VenCode").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_0__OrdTranNo").focus();
+                return false;
+            }
+        });
+
+        $("#VenCode").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_0__OrdTranNo").focus();
+                return false;
+            }
+        });
+
+        //-------Rows-0--------------------------
+        $("#TranIteams_0__OrdTranNo").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_0__IteamCode").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_0__IteamCode").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_0__QuantityPerIteam").val("");
+                $("#TranIteams_0__QuantityPerIteam").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_0__QuantityPerIteam").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_0__UnitPricePerIteam").val("");
+                $("#TranIteams_0__UnitPricePerIteam").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_0__UnitPricePerIteam").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_0__VatPercentage").val("");
+                $("#TranIteams_0__VatPercentage").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_0__VatPercentage").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_0__DiscountPercentage").val("");
+                $("#TranIteams_0__DiscountPercentage").focus();
+                return false;
+            }
+        });
+        $("#TranIteams_0__DiscountPercentage").keypress(function (event) {
+            if (event.which == 13) {
+                if (noRows > 1)
+                    $("#TranIteams_1__OrdTranNo").focus();
+                else {
+                    $("#TranAmount").val("");
+                    $("#TranAmount").focus();
+                }
+                return false;
+            }
+        });
+
+        //-------Rows-1--------------------------
+        $("#TranIteams_1__OrdTranNo").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_1__IteamCode").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_1__IteamCode").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_1__QuantityPerIteam").val("");
+                $("#TranIteams_1__QuantityPerIteam").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_1__QuantityPerIteam").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_1__UnitPricePerIteam").val("");
+                $("#TranIteams_1__UnitPricePerIteam").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_1__UnitPricePerIteam").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_1__VatPercentage").val("");
+                $("#TranIteams_1__VatPercentage").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_1__VatPercentage").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_1__DiscountPercentage").val("");
+                $("#TranIteams_1__DiscountPercentage").focus();
+                return false;
+            }
+        });
+        $("#TranIteams_1__DiscountPercentage").keypress(function (event) {
+            if (event.which == 13) {
+                if (noRows > 2)
+                    $("#TranIteams_2__OrdTranNo").focus();
+                else {
+                    $("#TranAmount").val("");
+                    $("#TranAmount").focus();
+                }
+                return false;
+            }
+        });
+
+        //-------Rows-2--------------------------
+        $("#TranIteams_2__OrdTranNo").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_2__IteamCode").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_2__IteamCode").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_2__QuantityPerIteam").val("");
+                $("#TranIteams_2__QuantityPerIteam").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_2__QuantityPerIteam").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_2__UnitPricePerIteam").val("");
+                $("#TranIteams_2__UnitPricePerIteam").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_2__UnitPricePerIteam").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_2__VatPercentage").val("");
+                $("#TranIteams_2__VatPercentage").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_2__VatPercentage").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_2__DiscountPercentage").val("");
+                $("#TranIteams_2__DiscountPercentage").focus();
+                return false;
+            }
+        });
+        $("#TranIteams_2__DiscountPercentage").keypress(function (event) {
+            if (event.which == 13) {
+                if (noRows > 3)
+                    $("#TranIteams_3__OrdTranNo").focus();
+                else {
+                    $("#TranAmount").val("");
+                    $("#TranAmount").focus();
+                }
+                return false;
+            }
+        });
+
+        //-------Rows-3--------------------------
+        $("#TranIteams_3__OrdTranNo").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_3__IteamCode").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_3__IteamCode").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_3__QuantityPerIteam").val("");
+                $("#TranIteams_3__QuantityPerIteam").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_3__QuantityPerIteam").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_3__UnitPricePerIteam").val("");
+                $("#TranIteams_3__UnitPricePerIteam").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_3__UnitPricePerIteam").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_3__VatPercentage").val("");
+                $("#TranIteams_3__VatPercentage").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_3__VatPercentage").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_3__DiscountPercentage").val("");
+                $("#TranIteams_3__DiscountPercentage").focus();
+                return false;
+            }
+        });
+        $("#TranIteams_3__DiscountPercentage").keypress(function (event) {
+            if (event.which == 13) {
+                if (noRows > 4)
+                    $("#TranIteams_4__OrdTranNo").focus();
+                else {
+                    $("#TranAmount").val("");
+                    $("#TranAmount").focus();
+                }
+                return false;
+            }
+        });
+
+        //-------Rows-4--------------------------
+        $("#TranIteams_4__OrdTranNo").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_4__IteamCode").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_4__IteamCode").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_4__QuantityPerIteam").val("");
+                $("#TranIteams_4__QuantityPerIteam").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_4__QuantityPerIteam").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_4__UnitPricePerIteam").val("");
+                $("#TranIteams_4__UnitPricePerIteam").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_4__UnitPricePerIteam").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_4__VatPercentage").val("");
+                $("#TranIteams_4__VatPercentage").focus();
+                return false;
+            }
+        });
+
+        $("#TranIteams_4__VatPercentage").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranIteams_4__DiscountPercentage").val("");
+                $("#TranIteams_4__DiscountPercentage").focus();
+                return false;
+            }
+        });
+        $("#TranIteams_4__DiscountPercentage").keypress(function (event) {
+            if (event.which == 13) {
+                if (noRows > 5)
+                    $("#TranIteams_5__OrdTranNo").focus();
+                else {
+                    $("#TranAmount").val("");
+                    $("#TranAmount").focus();
+                }
+                return false;
+            }
+        });
+        //-----------End rows ------------------------------
+
+
+        $("#TranAmount").keypress(function (event) {
+            if (event.which == 13) {
+                $("#OtherChargAmount").val("");
+                $("#OtherChargAmount").focus();
+                return false;
+            }
+        });
+        $("#OtherChargAmount").keypress(function (event) {
+            if (event.which == 13) {
+                $("#PaymentType").focus();
+                return false;
+            }
+        });
+        $("#PaymentType").keypress(function (event) {
+            if (event.which == 13) {
+                $("#DelverMediaCode").focus();
+                return false;
+            }
+        });
+        $("#DelverMediaCode").keypress(function (event) {
+            if (event.which == 13) {
+                $("#TranComment").focus();
+                return false;
+            }
+        });
+        $("#TranComment").keypress(function (event) {
+            if (event.which == 13) {
+                $("#btn[value=Save]").focus();
+                return false;
+            }
+        });
+        //--------------------------------------
+
+
+        $("#btn[value=Save]").click(function (event) {
+            var btnValue = $("#btn[value=Save]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+
+                return true;
+            }
+            else return false;
+
+        });
+        $("#btn[value=Delete]").click(function (event) {
+            var btnValue = $("#btn[value=Delete]").val(); // "Save";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Clear]").click(function (event) {
+            var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        $("#btn[value=Exit]").click(function (event) {
+            var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+            answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+            if (answer != "0") {
+                return true;
+            }
+            else return false;
+
+        });
+
+        //----------------------------------Testing ------------------
+        $("#dialog-datalist").hide();
+
+        $("#TranIteams_0__OrdTranNo").click(function () {
+            $("#dialog-datalist").dialog({
+                resizable: true,
+                height: 300,
+                width: 300,
+                modal: true,
+                buttons: {
+//                    "Save": function () {
+
+
+//                        $(this).dialog("close");
+//                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            return false;
+        });
+
+
+        $("#SearchKey").change(function (event) {
+            var params = {};
+            var strValue = $("#SearchKey").val();
+            params.ids = strValue.toString();
+
+            //alert(params.ids);
+            $.getJSON("/Transaction/JsonFuncOrderData", params, function (data) {
+                $("#TranIteams_0__OrdTranNo").val(data.OrdTranNo);
+                $("#TranIteams_0__QuantityPerIteam").val(data.QuantityPerIteam);
+            });
+
+            $("#dialog-datalist").dialog("close");
+            return false;
+        });
+
+    });
+
+    
+	</script> 
+}
+@section MainContent { 
+@using (Html.BeginForm()) {     
+<fieldset id="EntryFildSet">
+<legend>Daily Transaction</legend>
+    <table style="width: 100%; table-layout:auto; ">
+        <tr>
+            <td>
+                @(Html.LabelFor(m => m.TranNo))
+      
+            </td>
+            <td>
+                    @(Html.TextBoxFor(m => m.TranNo))
+            </td>
+            <td>
+                @(Html.LabelFor(m => m.TranDate))
+            
+            </td>
+            <td>
+                 @(Html.EditorFor(m => m.TranDate))
+            </td>
+            
+        </tr>
+        
+        <!-- Start Rows--------------------------------------------- -->
+        
+        <tr>
+         <td colspan="9">
+         <div style="width: 100%;  height: 250px; overflow: scroll; position:relative;">
+         <table style="width: 100%;">
+         <tr>
+            <td>SL#</td>
+            <td>Iteam</td>
+            <td>Vendor</td>
+            <td>Quantity</td>
+            <td>P/U</td>
+            <td>Discount</td>
+            <td>Vat</td>
+            <td></td>
+            <td></td>
+            </tr>
+            @for(var i = 0; i < Model.TranIteams.Count; i++)
+            {            
+            <tr>
+            <td colspan="6"></td>
+            </tr>
+            <tr>
+                                        <td>@(Html.CheckBoxFor(m => m.TranIteams[i].CheckSelect))@(Html.DisplayFor(m => m.TranIteams[i].SlNo, new { style = "width:30px; min-width:30px;" }))</td>
+@*                                        <td>@(Html.DisplayFor(m => m.TranIteams[i].IteamName, new { style = "width:150px; min-width:150px;" }))</td>
+                                        <td>@(Html.DisplayFor(m => m.TranIteams[i].VandorName, new { style = "width:150px; min-width:150px;" }))</td>
+                                        <td>@(Html.DisplayFor(m => m.TranIteams[i].VatPercentage, new { style = "width:30px; min-width:30px;" }))</td>
+                                        <td>@(Html.DisplayFor(m => m.TranIteams[i].QuantityPerIteam, new { style = "width:30px; min-width:30px;" }))</td>
+                                        <td>@(Html.DisplayFor(m => m.TranIteams[i].UnitPricePerIteam, new { style = "width:30px; min-width:30px;" }))</td>
+                                        <td>@(Html.DisplayFor(m => m.TranIteams[i].DiscountPercentage, new { style = "width:30px; min-width:30px;" }))</td>
+                                        <td>@(Html.DisplayFor(m => m.TranIteams[i].DelivaryMidea, new { style = "width:120px; min-width:120px;" }))</td>*@
+
+                       </tr>  
+                       
+           
+                     }
+          </table>       
+            </div>
+         </td>
+         </tr>
+        <tr>
+        <td colspan="9">
+        </td>
+        </tr> 
+         
+         <!-- End Rows--------------------------------------------- -->
+          <tr>  
+            <td>
+                &nbsp;
+            </td>
+            <td colspan="3">
+                    <button type="submit" id="btn" name="btn" value="Save">Save</button>
+                    <button type="submit" id="btn" name="btn" value="Search" >Search</button>
+                    <button type="submit" id="btn" name="btn" value="Update">Update</button> 
+                    <button type="submit" id="btn" name="btn" value="Delete">Delete</button>   
+                    <button type="submit" id="btn" name="btn" value="Clear">Clear</button>
+                    <button type="submit" id="btn" name="btn" value="Exit">Exit</button>
+            </td>
+        </tr>
+    </table>
+    </fieldset> 
+
+     <div id="dialog-datalist" title="Data List">
+     @(Html.ListBoxFor(m => m.SearchKey, Model.OrderList, new { style = "height:300px;width:400px;" }))
+     </div>
+          } 
+}

@@ -1,0 +1,202 @@
+@model NeSHOP.Models.InvoiceModels
+
+@{
+    ViewData["Title"] = "Invoice Search";
+}
+
+
+@section Scripts{
+<script type="text/javascript">
+
+        $(function () {
+            $("#SearchType[value=1]").attr("checked", true);
+            $("#InvoiceNo").focus();
+            //$("#TranDateFrom").datepicker({ dateFormat: "yy-mm-dd" }).val();
+            //$("#TranDateTo").datepicker({ dateFormat: "yy-mm-dd" }).val();
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                startDate: '-3y',
+                Default: true
+            });
+
+            $("#InvoiceNo").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#InvoiceNo").val();
+                    if (ordType == '') alert("InvoiceNo does not empty");
+                    else {
+                        $("#TranDateFrom").focus();
+                    }
+                    return false;
+                }
+
+            });
+
+            $("#TranDateFrom").keypress(function (event) {
+                if (event.which == 13) {
+                    var ordType = $("#TranDateFrom").val();
+                    if (ordType == '') alert("CatagoryCode does not empty");
+                    else {
+                        $("#TranDateTo").focus();
+                    }
+                    return false;
+                }
+
+            });
+
+            $("#TranDateTo").keypress(function (event) {
+                if (event.which == 13 || event.which == 9) {
+                    $("#btn[value=Search]").focus();
+                    return false;
+                }
+            });
+
+
+            ///--------------------------------------------------
+
+
+            $("#btn[value=Search]").click(function (event) {
+                var btnValue = $("#btn[value=Search]").val(); // "Save";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+
+                    return true;
+                }
+                else return false;
+
+            });
+
+            $("#btn[value=Preview]").click(function (event) {
+                var btnValue = $("#btn[value=Preview]").val(); // "Save";
+                var rType = $("#SearchType:checked").val(); // "Save";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    var qString = rType + '-' + $("#InvoiceNo").val();
+                    //alert(qString);
+                    window.open('/Reports/Rpt_InvoiceReport/' + qString, 'Report', 'width=1000,height=600,resizeable,scrollbars');
+                }
+                return false;
+            });
+
+            $("#btn[value=Clear]").click(function (event) {
+                var btnValue = $("#btn[value=Clear]").val(); // "Clear";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    return true;
+                }
+                else return false;
+
+            });
+
+            $("#btn[value=Exit]").click(function (event) {
+                var btnValue = $("#btn[value=Exit]").val(); // "Exit";
+                answer = confirm("Are You Cofirme to " + btnValue + " This Operation.....?");
+                if (answer != "0") {
+                    return true;
+                }
+                else return false;
+
+            });
+
+
+            if ($("#SuccessStat").val() == "1") {
+                $.alert("Stockin Successfull...!!", { withTime: true, type: 'success', title: 'Success:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "2") {
+                $.alert("Stockin Fail...!!", { withTime: true, type: 'warning', title: 'Fail:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+            else if ($("#SuccessStat").val() == "3") {
+                $.alert("Stockin Data Exception...!!", { withTime: true, type: 'info', title: 'Info:', icon: 'glyphicon glyphicon-heart', minTop: 100 });
+            }
+
+        });
+
+    </script>
+}
+
+
+<form action="/Transaction/invoicesearch" method="post"> 
+    <div class="row container padding-top padding-bottom">
+        <div class="panel panel-responsive bg-gray-light  mt-1 pb-2 rounded-2">
+            <div class="panel-heading bg-navy-active p-2 mt-0 rounded-2 text-center">
+                <h4>Invoice Search</h4> 
+            </div>
+            <div class="panel-body" style="width:95%">
+                <div class="row pt-3 mb-1">
+                    <div class="col-md-4"><label asp-for="InvoiceNo" class="control-label"></label></div>
+                    <div class="col-md-8">
+                        <input type="text" asp-for="InvoiceNo" class="form-control w-50 rounded-1" />
+
+                        <input type="hidden" id="SuccessStat" value="@ViewData["SuccessStat"]" />
+                    </div>
+                </div> 
+                <div class="row mb-2">
+                    <div class="col-4"><label asp-for="TranDateFrom" class="control-label"></label></div>
+                    <div class="col-8"><input type="text" asp-for="TranDateFrom" class="datepicker form-control w-50" /> </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label asp-for="TranDateTo" class="control-label"></label></div>
+                    <div class="col-8"><input type="text" asp-for="TranDateTo" class="datepicker form-control w-50" /> </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"></div>
+                    <div class="col-6 btn-group p-3" role="group">
+                        <button type="submit" class="btn btn-primary btn-sm" id="btn" name="btn" value="Search">Search</button>
+                        <button type="submit" class="btn btn-success btn-sm" id="btn" name="btn" value="Preview">Preview</button>
+                        <button type="submit" class="btn btn-warning btn-sm" id="btn" name="btn" value="PreviewReturn">Sales Return</button>
+                        <button type="submit" class="btn btn-info btn-sm" id="btn" name="btn" value="Clear">Clear</button>
+                        <button type="submit" class="btn btn-danger btn-sm" id="btn" name="btn" value="Exit">Exit</button>
+                    </div>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-responsive bg-light mt-2 p-2 rounded-2">
+            <div style="overflow-y: scroll; height:250px; position:relative;">
+                <table class="listTable w-100">
+                    <thead>
+                        <tr class="bg-black-gradient h-100">
+                        <td>Invoice #</td>
+                        <td>Date</td>
+                        <td>Party Name</td>
+                        <td>Challan #</td>      
+                        <td>Quantity</td>     
+                        <td></td>
+                        </tr>
+                    </thead>
+                    <tbody id="tblList">
+                        @if (Model.InvoiceList != null)
+                        {
+                            for (var i = 0; i < Model.InvoiceList.Count; i++)
+                            {
+                                <tr>
+                                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.InvoiceList[i].InvoiceNo))</td>
+                                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.InvoiceList[i].InvoiceDate))</td>
+                                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.InvoiceList[i].Customer))</td>
+                                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.InvoiceList[i].ChalanNo))</td>    
+                                <td style="border-top: 1px dotted;">@(Html.DisplayFor(m => m.InvoiceList[i].Quantity))</td>              
+                                <td style="border-top: 1px dotted;">
+                                <button type="submit" id="btn" name="btn" value="Show" onclick="javascript: window.open('/Reports/Rpt_InvoiceReport/1-'+'@(Model.InvoiceList[i].InvoiceNo.Substring(4, 8))', 'Report', target='_blank','width=1000,height=600,resizeable,scrollbars'); return false;">SHOW</button>
+                                </td> 
+                                </tr>
+                            }
+
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr class="bg-black-gradient h-100">
+                        <td>Invoice #</td>
+                        <td>Date</td>
+                        <td>Party Name</td>
+                        <td>Challan #</td>      
+                        <td>Quantity</td>     
+                        <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</form>
