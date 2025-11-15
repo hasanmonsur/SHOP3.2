@@ -1,81 +1,75 @@
-using AspNetCore.Report.ReportService2010_;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using NeSHOP.Contacts;
 using NeSHOP.DAL;
 using NESHOP.Auth;
 using NESHOP.Contacts;
-//using NESHOP.DAL;
 using Serilog;
 
 try
 {
-        //create the logger and setup your sinks, filters and properties
-        Log.Logger = new LoggerConfiguration()
-         .WriteTo.Console()
-         .CreateBootstrapLogger();
+    // Early logger for startup
+    Log.Logger = new LoggerConfiguration()
+        .WriteTo.Console()
+        .CreateBootstrapLogger();
 
-        Log.Information("Starting up");
+    Log.Information("Starting up");
 
+    var builder = WebApplication.CreateBuilder(args);
 
-        var builder = WebApplication.CreateBuilder(args);
-
-        builder.Host.UseSerilog();
-
-        builder.Host.UseSerilog((ctx, lc) => lc
+    // Main Serilog configuration
+    builder.Host.UseSerilog((ctx, lc) => lc
         .WriteTo.Console()
         .ReadFrom.Configuration(ctx.Configuration));
 
+    // MVC + Razor
+    builder.Services.AddControllersWithViews();
+    builder.Services.AddRazorPages();
 
-        builder.Services.AddControllersWithViews();
-        builder.Services.AddSession();
+    // Session
+    builder.Services.AddSession();
 
-        builder.Services.AddScoped<IBllDbConnection, BllDbConnection>();
-        builder.Services.AddScoped<IBllAdmin, BllAdmin>();
-        builder.Services.AddScoped<IBllUserInfo, BllUserInfo>();
-        builder.Services.AddScoped<IBllCommon, BllCommon>();
-        builder.Services.AddScoped<IBllDbConnection, BllDbConnection>();
-        builder.Services.AddScoped<IBllIteam, BllIteam>();
-        builder.Services.AddScoped<IBllSettings, BllSettings>();
-        builder.Services.AddScoped<IBllOrder, BllOrder>();
-        builder.Services.AddScoped<IBllSuplier, BllSuplier>();
-        builder.Services.AddScoped<IBllTran, BllTran>();
-        //builder.Services.AddScoped<IBllBarcode, BllBarcode>();
+    // CORS
+    builder.Services.AddCors();
 
+    // Dependency Injection
+    builder.Services.AddScoped<IBllDbConnection, BllDbConnection>();
+    builder.Services.AddScoped<IBllAdmin, BllAdmin>();
+    builder.Services.AddScoped<IBllUserInfo, BllUserInfo>();
+    builder.Services.AddScoped<IBllCommon, BllCommon>();
+    builder.Services.AddScoped<IBllIteam, BllIteam>();
+    builder.Services.AddScoped<IBllSettings, BllSettings>();
+    builder.Services.AddScoped<IBllOrder, BllOrder>();
+    builder.Services.AddScoped<IBllSuplier, BllSuplier>();
+    builder.Services.AddScoped<IBllTran, BllTran>();
+    //builder.Services.AddScoped<IBllBarcode, BllBarcode>();
 
-         builder.Services.AddCors();
-        builder.Services.AddRazorPages();
-    //builder.Services.AddAuthentication();
+    var app = builder.Build();
 
-   // builder.Services.AddAuthorization();
+    // Serilog request logging
+    app.UseSerilogRequestLogging();
 
-        //builder.Services.AddSingleton<IAuthorizationHandler, AccountHandler>();
+    // Static files
+    app.UseStaticFiles();
 
-        builder.Services.AddControllersWithViews();
+    // Routing
+    app.UseRouting();
 
-        //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-        //var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        //var environmentName = builder.Environment.EnvironmentName;
+    // Authorization (after routing)
+    app.UseAuthorization();
 
-        var app = builder.Build();
+    // Session (must be before MVC endpoint execution)
+    app.UseSession();
 
-        app.UseSerilogRequestLogging();
-      
-        app.UseStaticFiles();
+    // Razor pages
+    app.MapRazorPages();
 
-        app.UseRouting();
+    // MVC Route
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Logon}/{id?}");
 
-        app.UseAuthorization();
-
-        app.MapRazorPages();
-
-        app.UseSession();
-
-        app.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Logon}/{id?}");
-
-        app.Run();
+    app.Run();
 }
 catch (Exception ex)
 {

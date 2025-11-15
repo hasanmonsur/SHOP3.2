@@ -1,4 +1,4 @@
-﻿namespace NESHOP.Models
+﻿namespace NeSHOP.Models
 {
     public class DaoUserInfo
     {

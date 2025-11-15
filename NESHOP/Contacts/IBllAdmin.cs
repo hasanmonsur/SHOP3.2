@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using NeSHOP.Models;
-using NESHOP.Models;
 using System.Collections.ObjectModel;
+using UserInfoModel = NeSHOP.Models.UserInfoModel;
 
 namespace NESHOP.Contacts
 {
@@ -46,7 +46,7 @@ namespace NESHOP.Contacts
         TblAppinfoModel FuncSearchInstInformation(string Instcode, DaoUserInfo objDaoUserInfo);
         bool FuncUpdateInstInformation(TblAppinfoModel viewModel, DaoUserInfo objDaoUserInfo);
         int FuncValidLicanceAuthentication();
-        UserInfoModel FunSearchEmpInfo(string EmpCode);
+        //UserInfoModel FunSearchEmpInfo(string EmpCode);
         bool FunUpdateEmpInfo(UserInfoModel viewModel);
     }
 }
