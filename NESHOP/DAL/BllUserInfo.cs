@@ -67,7 +67,7 @@ namespace NeSHOP.DAL
             return daoUserInfo;
         }
 
-        public bool FunSaveUserInfo(Models.RegisterModel viewModel, DaoUserInfo objDaoUserInfo)
+        public bool FunSaveUserInfo(RegisterModel viewModel, DaoUserInfo objDaoUserInfo)
         {
             String conString = _dbConn.FunReturnConString();
             bool opStatus = false;
@@ -340,50 +340,6 @@ namespace NeSHOP.DAL
 
             return opStatus;
         }
-
-        public bool FunLoginPasswordChange(NESHOP.Models.ChangePasswordModel viewModel, NESHOP.Models.DaoUserInfo objDaoUserInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool FunLoginPasswordChange(NESHOP.Models.ChangePasswordModel viewModel, DaoUserInfo objDaoUserInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool FunSaveUserInfo(RegisterModel viewModel, DaoUserInfo objDaoUserInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        RegisterModel IBllUserInfo.FunSearchUserInfo(string UserId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool FunUpdateUserInfo(NESHOP.Models.RegisterModel viewModel, DaoUserInfo objDaoUserInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool FunLoginPasswordChange(NESHOP.Models.ChangePasswordModel viewModel, DaoUserInfo objDaoUserInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool FunSaveUserInfo(NESHOP.Models.RegisterModel viewModel, DaoUserInfo objDaoUserInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        RegisterModel FunSearchUserInfo(string UserId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool FunUpdateUserInfo(NESHOP.Models.RegisterModel viewModel, DaoUserInfo objDaoUserInfo)
-        {
-            throw new NotImplementedException();
-        }
+               
     }
 }

@@ -46,7 +46,7 @@ namespace NESHOP.Contacts
         TblAppinfoModel FuncSearchInstInformation(string Instcode, DaoUserInfo objDaoUserInfo);
         bool FuncUpdateInstInformation(TblAppinfoModel viewModel, DaoUserInfo objDaoUserInfo);
         int FuncValidLicanceAuthentication();
-        //UserInfoModel FunSearchEmpInfo(string EmpCode);
+        UserInfoModel FunSearchEmpInfo(string EmpCode);
         bool FunUpdateEmpInfo(UserInfoModel viewModel);
     }
 }

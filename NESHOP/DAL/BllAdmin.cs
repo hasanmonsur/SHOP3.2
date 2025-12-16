@@ -1252,7 +1252,7 @@ namespace NeSHOP.DAL
             return opStatus;
         }
 
-        public Models.UserInfoModel FunSearchEmpInfo(string EmpCode)
+        public UserInfoModel FunSearchEmpInfo(string EmpCode)
         {
             String conString = _dbConn.FunReturnConString();
             SqlConnection sqlConn = new SqlConnection();
@@ -1471,16 +1471,7 @@ namespace NeSHOP.DAL
 
             return objSelectList;
         }
-
-        public bool FuncEntryEmpInfo(Models.UserInfoModel objDaoUserInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool FunUpdateEmpInfo(Models.UserInfoModel viewModel)
-        {
-            throw new NotImplementedException();
-        }
+         
     }
 
 

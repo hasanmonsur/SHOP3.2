@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Web;
-using BarcodeLib;
+using BarcodeStandard;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -599,13 +599,13 @@ namespace NeSHOP.Controllers
 
                     if (!string.IsNullOrEmpty(viewModel.ModelCode))
                     {
-                        BarcodeLib.Barcode barcode = new BarcodeLib.Barcode()
+                        Barcode barcode = new Barcode()
                         {
                             IncludeLabel = true,
-                            Alignment = AlignmentPositions.CENTER,
+                            Alignment = AlignmentPositions.Center,
                             Width = 300,
                             Height = 100,
-                            RotateFlipType = RotateFlipType.RotateNoneFlipNone,
+                           // RotateFlipType = RotateFlipType.RotateNoneFlipNone,
                             BackColor = Color.White,
                             ForeColor = Color.Black,
                         };
