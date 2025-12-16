@@ -66,6 +66,7 @@ namespace NeSHOP.Controllers
 
         #region A/C Tran Report
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, NoStore = false)]
         public ActionResult Rpt_AcTranReport(String id)
         {
             objDaoUserInfo = new DaoUserInfo();
@@ -265,6 +266,7 @@ namespace NeSHOP.Controllers
 
         #region Un used 
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, NoStore = false)]
         public ActionResult Rpt_RptDailyBuyTran(String id)
         {
             objDaoUserInfo = new DaoUserInfo();
@@ -293,6 +295,7 @@ namespace NeSHOP.Controllers
         //
         // GET: /Reports/Create
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, NoStore = false)]
         public ActionResult Rpt_RptDailySalesTran(String id)
         {
             objDaoUserInfo = new DaoUserInfo();
@@ -321,6 +324,7 @@ namespace NeSHOP.Controllers
         ////
         //// POST: /Reports/Create
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, NoStore = false)]
         public ActionResult Rpt_RptDailyProdInTran(String id)
         {
             objDaoUserInfo = new DaoUserInfo();
@@ -349,6 +353,7 @@ namespace NeSHOP.Controllers
         ////
         //// GET: /Reports/Edit/5
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, NoStore = false)]
         public ActionResult Rpt_RptDailyProdOutTran(String id)
         {
             objDaoUserInfo = new DaoUserInfo();
@@ -379,6 +384,7 @@ namespace NeSHOP.Controllers
 
         #region Stock Search Report
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, NoStore = false)]
         public ActionResult Rpt_StockSearch(String id)
         {
             objDaoUserInfo = new DaoUserInfo();
@@ -493,6 +499,7 @@ namespace NeSHOP.Controllers
 
         #region Stock Details Report
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, NoStore = false)]
         public ActionResult Rpt_StockDetails(String id)
         {
             objDaoUserInfo = new DaoUserInfo();
@@ -626,6 +633,7 @@ namespace NeSHOP.Controllers
 
         #region Voucher Report
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, NoStore = false)]
         public ActionResult Rpt_VoucherReport(String id)
         {
             objDaoUserInfo = new DaoUserInfo();
@@ -756,6 +764,7 @@ namespace NeSHOP.Controllers
 
         #region Tran Saction Report
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, NoStore = false)]
         public ActionResult Rpt_TransactionReport(String id)
         {
             objDaoUserInfo = new DaoUserInfo();
@@ -863,6 +872,7 @@ namespace NeSHOP.Controllers
 
         #region Quatation Report
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, NoStore = false)]
         public ActionResult Rpt_QutationSearch(String id)
         {
             objDaoUserInfo = new DaoUserInfo();
@@ -1008,6 +1018,7 @@ namespace NeSHOP.Controllers
 
         #region Challan Report
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, NoStore = false)]
         public ActionResult Rpt_ChallanReport(String id)
         {
             objDaoUserInfo = new DaoUserInfo();
@@ -1131,6 +1142,7 @@ namespace NeSHOP.Controllers
 
         #region Return Challan Report
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, NoStore = false)]
         public ActionResult Rpt_ReturnChallanReport(String id)
         {
             objDaoUserInfo = new DaoUserInfo();
@@ -1257,6 +1269,7 @@ namespace NeSHOP.Controllers
 
         #region Invoice Report
 
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, NoStore = false)]
         public ActionResult Rpt_InvoiceReport(String id)
         {
             objDaoUserInfo = new DaoUserInfo();

@@ -27,8 +27,10 @@ body {
 }
 .bg-image1 {
     padding-bottom: -120px;
-    background: url('../images/home.png') no-repeat;
-    background-size:cover;
+    width: 100%;
+    margin: 0;
+    background: url('../images/home-bg.jpg') repeat center center;
+    background-size: cover;
 }
 
 
@@ -53,4 +55,8 @@ body {
     font-family: sans-serif;
     text-align: center;
     font-size: 24px
+}
+.element {
+    padding-left: 16px;
+    padding-right: 16px;
 }

@@ -4,6 +4,7 @@
     <TargetFramework>net8.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>$(NoWarn);CS8618;CS8601;CS8602;CS8600;CS8604;CS0168;CS0618;CS0472;CS0219;CS8625;CS8603</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,7 +47,6 @@
     <Compile Remove="DAL\BllModuleInfo.cs" />
     <Compile Remove="DAL\BllRoleInfo.cs" />
     <Compile Remove="DAL\BllVendor.cs" />
-    <Compile Remove="Helpers\BarCodeTagHelper.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -73,6 +73,10 @@
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.8" />
+    <PackageReference Include="SkiaSharp" Version="2.88.8" />
+    <PackageReference Include="ZXing.Net" Version="0.16.9" />
+    <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.9" />
   </ItemGroup>
 
   <ItemGroup>
@@ -94,7 +98,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="wwwroot\barcodes\" />
   </ItemGroup>
 

@@ -5,6 +5,8 @@ using NeSHOP.DAL;
 using NESHOP.Auth;
 using NESHOP.Contacts;
 using Serilog;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.StaticFiles;
 
 try
 {
@@ -27,10 +29,18 @@ try
     builder.Services.AddRazorPages();
 
     // Session
-    builder.Services.AddSession();
+    builder.Services.AddSession(options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.IdleTimeout = TimeSpan.FromMinutes(30);
+    });
 
     // CORS
     builder.Services.AddCors();
+
+    // Response caching
+    builder.Services.AddResponseCaching();
 
     // Dependency Injection
     builder.Services.AddScoped<IBllDbConnection, BllDbConnection>();
@@ -42,21 +52,33 @@ try
     builder.Services.AddScoped<IBllOrder, BllOrder>();
     builder.Services.AddScoped<IBllSuplier, BllSuplier>();
     builder.Services.AddScoped<IBllTran, BllTran>();
-    //builder.Services.AddScoped<IBllBarcode, BllBarcode>();
-
+    
     var app = builder.Build();
 
     // Serilog request logging
     app.UseSerilogRequestLogging();
 
-    // Static files
-    app.UseStaticFiles();
+    // HTTPS redirection
+    app.UseHttpsRedirection();
+
+    // Static files (with cache headers)
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        OnPrepareResponse = ctx =>
+        {
+            const int durationInSeconds = 60 * 60 * 24 * 7; // 7 days
+            ctx.Context.Response.Headers["Cache-Control"] = $"public,max-age={durationInSeconds}";
+        }
+    });
 
     // Routing
     app.UseRouting();
 
     // Authorization (after routing)
     app.UseAuthorization();
+
+    // Response caching
+    app.UseResponseCaching();
 
     // Session (must be before MVC endpoint execution)
     app.UseSession();
@@ -68,6 +90,12 @@ try
     app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Logon}/{id?}");
+
+    // HSTS for non-Development
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseHsts();
+    }
 
     app.Run();
 }

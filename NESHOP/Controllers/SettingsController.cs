@@ -4,7 +4,10 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Web;
-using BarcodeStandard;
+using ZXing;
+using ZXing.Common;
+using ZXing.Windows.Compatibility;
+using System.Drawing.Imaging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -599,38 +602,38 @@ namespace NeSHOP.Controllers
 
                     if (!string.IsNullOrEmpty(viewModel.ModelCode))
                     {
-                        Barcode barcode = new Barcode()
-                        {
-                            IncludeLabel = true,
-                            Alignment = AlignmentPositions.Center,
-                            Width = 300,
-                            Height = 100,
-                           // RotateFlipType = RotateFlipType.RotateNoneFlipNone,
-                            BackColor = Color.White,
-                            ForeColor = Color.Black,
-                        };
-
-                        //string bracodeString = viewModel.ModelCode + "|" + viewModel.ModelName;
+                        // Build CODE_128 barcode image using ZXing
                         string bracodeString = viewModel.ModelCode;
                         if (bracodeString.Length > 39)
                             bracodeString = bracodeString.Substring(0, 39);
 
-                        //bracodeString= bracodeString+ System.Environment.NewLine + "done";
+                        var options = new EncodingOptions
+                        {
+                            Width = 300,
+                            Height = 100,
+                            Margin = 2,
+                            PureBarcode = true
+                        };
 
-                        //Image img = barcode.Encode(TYPE.CODE128B, viewModel.ModelCode);
-                        Image img = barcode.Encode(TYPE.CODE128B, bracodeString);
-           
+                        var writer = new BarcodeWriter
+                        {
+                            Format = BarcodeFormat.CODE_128,
+                            Options = options
+                        };
 
-                        string filePath = Path.Combine(_environment.WebRootPath, "barcodes\\"+ viewModel.ModelCode+".png");
-                        img.Save(filePath);
+                        using (var bitmap = writer.Write(bracodeString))
+                        {
+                            string filePath = Path.Combine(_environment.WebRootPath, "barcodes\\" + viewModel.ModelCode + ".png");
+                            bitmap.Save(filePath, ImageFormat.Png);
 
-                        string fileName = Path.GetFileName(filePath);
-                        string imageUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}" + "/barcodes/" + fileName;
-                        ViewBag.QrCodeUri = imageUrl;
-                        viewModel.Barcodeurl = imageUrl;
+                            string fileName = Path.GetFileName(filePath);
+                            string imageUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}" + "/barcodes/" + fileName;
+                            ViewBag.QrCodeUri = imageUrl;
+                            viewModel.Barcodeurl = imageUrl;
 
-                        ViewData.Model = viewModel;
-                        return View();
+                            ViewData.Model = viewModel;
+                            return View();
+                        }
                     }
                     else
                     {

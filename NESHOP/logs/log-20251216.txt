@@ -1,0 +1,159 @@
+2025-12-16 11:41:10.867 +06:00 [INF] Now listening on: http://localhost:5173
+2025-12-16 11:41:10.896 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-16 11:41:10.899 +06:00 [INF] Hosting environment: Development
+2025-12-16 11:41:10.902 +06:00 [INF] Content root path: D:\NESHOP3.2\NESHOP
+2025-12-16 11:41:17.780 +06:00 [WRN] Failed to determine the https port for redirect.
+2025-12-16 11:41:18.489 +06:00 [INF] HTTP GET / responded 200 in 709.6209 ms
+2025-12-16 11:41:18.543 +06:00 [INF] HTTP GET /css/site.css responded 200 in 11.0486 ms
+2025-12-16 11:41:18.551 +06:00 [INF] HTTP GET /lib/bootstrap/dist/css/AdminLTE.min.css responded 200 in 14.1304 ms
+2025-12-16 11:41:18.551 +06:00 [INF] HTTP GET /css/font-awesome.min.css responded 200 in 15.7152 ms
+2025-12-16 11:41:18.551 +06:00 [INF] HTTP GET /css/ionicons.min.css responded 200 in 14.2991 ms
+2025-12-16 11:41:18.551 +06:00 [INF] HTTP GET /lib/bootstrap/dist/css/skins/_all-skins.min.css responded 200 in 2.8149 ms
+2025-12-16 11:41:18.552 +06:00 [INF] HTTP GET /lib/bootstrap/dist/css/bootstrap.min.css responded 200 in 30.7989 ms
+2025-12-16 11:41:18.553 +06:00 [INF] HTTP GET /css/site.css responded 200 in 0.7627 ms
+2025-12-16 11:41:18.559 +06:00 [INF] HTTP GET /js/site.js responded 200 in 2.1781 ms
+2025-12-16 11:41:18.565 +06:00 [INF] HTTP GET /lib/jquery/dist/jquery.min.js responded 200 in 4.0344 ms
+2025-12-16 11:41:18.570 +06:00 [INF] HTTP GET /lib/bootstrap/dist/js/bootstrap.bundle.min.js responded 200 in 4.7742 ms
+2025-12-16 11:41:18.578 +06:00 [INF] HTTP GET /lib/bootstrap/dist/js/app.min.js responded 200 in 2.7608 ms
+2025-12-16 11:41:18.584 +06:00 [INF] HTTP GET /lib/bootstrap/dist/js/demo.js responded 200 in 2.0546 ms
+2025-12-16 11:41:18.593 +06:00 [INF] HTTP GET /lib/bootstrap/dist/js/bootstrap-flash-alert.js responded 200 in 0.9448 ms
+2025-12-16 11:41:18.746 +06:00 [INF] HTTP GET /images/home.png responded 200 in 17.5034 ms
+2025-12-16 11:41:19.208 +06:00 [INF] HTTP GET /images/pos_icon6.ico responded 200 in 2.4811 ms
+2025-12-16 11:41:27.306 +06:00 [INF] Hello Welcome 
+2025-12-16 11:41:37.819 +06:00 [ERR] Exception Error: Cannot open database "DBSHOP" requested by the login. The login failed.
+Login failed for user 'sa'.
+2025-12-16 11:41:37.826 +06:00 [INF] HTTP POST / responded 200 in 10554.5525 ms
+2025-12-16 15:36:01.635 +06:00 [INF] Hello Welcome 
+2025-12-16 15:36:01.776 +06:00 [INF] HTTP POST / responded 200 in 195.3652 ms
+2025-12-16 15:36:12.187 +06:00 [INF] Hello Welcome 
+2025-12-16 15:36:12.199 +06:00 [INF] HTTP POST / responded 200 in 12.6325 ms
+2025-12-16 15:36:59.188 +06:00 [INF] Application is shutting down...
+2025-12-16 15:36:59.212 +06:00 [INF] Shut down complete
+2025-12-16 15:37:09.377 +06:00 [INF] Now listening on: http://localhost:5173
+2025-12-16 15:37:09.398 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-16 15:37:09.402 +06:00 [INF] Hosting environment: Development
+2025-12-16 15:37:09.404 +06:00 [INF] Content root path: D:\NESHOP3.2\NESHOP
+2025-12-16 15:37:15.202 +06:00 [WRN] Failed to determine the https port for redirect.
+2025-12-16 15:37:15.486 +06:00 [INF] HTTP GET / responded 200 in 283.8014 ms
+2025-12-16 15:37:21.260 +06:00 [INF] Hello Welcome 
+2025-12-16 15:37:21.417 +06:00 [INF] HTTP POST / responded 302 in 179.7586 ms
+2025-12-16 15:37:21.430 +06:00 [INF] HTTP GET /Admin/AddLicance responded 302 in 5.2469 ms
+2025-12-16 15:37:21.443 +06:00 [INF] HTTP GET / responded 200 in 5.7033 ms
+2025-12-16 15:38:50.002 +06:00 [INF] Hello Welcome 
+2025-12-16 15:38:50.014 +06:00 [INF] HTTP POST / responded 200 in 13.4355 ms
+2025-12-16 22:53:20.207 +06:00 [INF] HTTP GET / responded 200 in 5.6314 ms
+2025-12-16 22:53:27.107 +06:00 [INF] Hello Welcome 
+2025-12-16 22:53:27.231 +06:00 [INF] HTTP POST / responded 302 in 124.3446 ms
+2025-12-16 22:53:27.826 +06:00 [INF] HTTP GET /Home/Index responded 200 in 586.3934 ms
+2025-12-16 22:53:27.882 +06:00 [INF] HTTP GET /lib/bootstrap/dist/css/bootstrap-datepicker.min.css responded 200 in 17.5710 ms
+2025-12-16 22:53:27.889 +06:00 [INF] HTTP GET /css/ionicons.min.css responded 200 in 19.8519 ms
+2025-12-16 22:53:27.894 +06:00 [INF] HTTP GET /css/custom.css responded 200 in 1.5079 ms
+2025-12-16 22:53:27.889 +06:00 [INF] HTTP GET /lib/bootstrap/dist/css/bootstrap.min.css responded 200 in 26.8407 ms
+2025-12-16 22:53:27.889 +06:00 [INF] HTTP GET /lib/bootstrap/dist/css/skins/_all-skins.min.css responded 200 in 19.9309 ms
+2025-12-16 22:53:27.889 +06:00 [INF] HTTP GET /lib/bootstrap/dist/css/AdminLTE.min.css responded 200 in 20.3281 ms
+2025-12-16 22:53:27.889 +06:00 [INF] HTTP GET /fontawesome/css/fontawesome.min.css responded 200 in 23.3823 ms
+2025-12-16 22:53:27.906 +06:00 [INF] HTTP GET /lib/jquery/dist/jquery.min.js responded 200 in 2.5168 ms
+2025-12-16 22:53:27.908 +06:00 [INF] HTTP GET /lib/bootstrap/dist/js/bootstrap.min.js responded 200 in 2.1076 ms
+2025-12-16 22:53:27.909 +06:00 [INF] HTTP GET /lib/bootstrap/dist/js/bootstrap-datepicker.min.js responded 200 in 1.9199 ms
+2025-12-16 22:53:27.915 +06:00 [INF] HTTP GET /lib/bootstrap/dist/js/bootstrap.bundle.min.js responded 200 in 13.2452 ms
+2025-12-16 22:53:27.917 +06:00 [INF] HTTP GET /lib/bootstrap/dist/js/app.min.js responded 200 in 1.0664 ms
+2025-12-16 22:53:27.920 +06:00 [INF] HTTP GET /lib/bootstrap/dist/js/demo.js responded 200 in 5.1260 ms
+2025-12-16 22:53:27.921 +06:00 [INF] HTTP GET /lib/bootstrap/dist/js/bootstrap-flash-alert.js responded 200 in 1.5893 ms
+2025-12-16 22:53:27.926 +06:00 [INF] HTTP GET /images/avatar-male.png responded 200 in 16.3522 ms
+2025-12-16 22:53:27.926 +06:00 [INF] HTTP GET /Images/avatar-male.png responded 200 in 19.7181 ms
+2025-12-16 22:53:28.158 +06:00 [INF] HTTP GET /images/pos_icon6.ico responded 200 in 10.7206 ms
+2025-12-16 22:53:35.738 +06:00 [INF] HTTP GET /Admin/Logout responded 302 in 3.5994 ms
+2025-12-16 22:53:35.753 +06:00 [INF] HTTP GET / responded 200 in 1.0532 ms
+2025-12-16 22:53:42.176 +06:00 [INF] Hello Welcome 
+2025-12-16 22:53:42.185 +06:00 [INF] HTTP POST / responded 302 in 9.4908 ms
+2025-12-16 22:53:42.219 +06:00 [INF] HTTP GET /Home/Index responded 200 in 26.2970 ms
+2025-12-16 22:53:47.088 +06:00 [INF] HTTP GET /Inventory/StockIn responded 200 in 83.1889 ms
+2025-12-16 22:53:53.342 +06:00 [INF] HTTP GET /Transaction/QutationSearch responded 200 in 40.3905 ms
+2025-12-16 22:53:54.715 +06:00 [INF] HTTP GET /Transaction/ChallanEntry responded 200 in 76.8085 ms
+2025-12-16 22:53:56.077 +06:00 [INF] HTTP GET /Transaction/InvoiceEntry responded 200 in 78.7501 ms
+2025-12-16 22:53:57.250 +06:00 [INF] HTTP GET /Transaction/InvoiceSearch responded 200 in 47.3673 ms
+2025-12-16 22:53:57.904 +06:00 [INF] HTTP GET /Transaction/SalesReturn responded 200 in 47.2991 ms
+2025-12-16 22:53:58.637 +06:00 [INF] HTTP GET /Transaction/ChallanModfy responded 200 in 46.2967 ms
+2025-12-16 22:53:59.280 +06:00 [INF] HTTP GET /Transaction/InvoiceModify responded 200 in 56.1065 ms
+2025-12-16 22:54:00.245 +06:00 [INF] HTTP GET /Transaction/QutationSearch responded 200 in 20.7055 ms
+2025-12-16 22:54:23.384 +06:00 [INF] HTTP GET /Account/VoucherEntry responded 200 in 66.2255 ms
+2025-12-16 22:54:29.767 +06:00 [INF] HTTP GET /Transaction/ChallanEntry responded 200 in 18.2994 ms
+2025-12-16 22:54:33.454 +06:00 [INF] HTTP GET /Transaction/InvoiceEntry responded 200 in 16.7728 ms
+2025-12-16 22:54:59.802 +06:00 [INF] HTTP GET /Transaction/ChallanModfy responded 200 in 19.1988 ms
+2025-12-16 22:55:00.767 +06:00 [INF] HTTP GET /Transaction/InvoiceModify responded 200 in 31.9695 ms
+2025-12-16 22:55:09.537 +06:00 [INF] HTTP GET /Home/Index responded 200 in 10.9002 ms
+2025-12-16 22:55:13.312 +06:00 [INF] HTTP GET /Inventory/StockIn responded 200 in 26.6686 ms
+2025-12-16 22:55:14.373 +06:00 [INF] HTTP GET /Inventory/StockSearch responded 200 in 45.5622 ms
+2025-12-16 22:55:16.212 +06:00 [INF] HTTP GET /Inventory/StockModify responded 200 in 47.0128 ms
+2025-12-16 22:55:18.911 +06:00 [INF] HTTP GET /Inventory/StockDetails responded 200 in 27.4039 ms
+2025-12-16 22:55:51.649 +06:00 [INF] HTTP GET /Transaction/ChallanEntry responded 200 in 18.2379 ms
+2025-12-16 22:56:09.120 +06:00 [INF] HTTP GET /Inventory/StockIn responded 200 in 25.8251 ms
+2025-12-16 22:56:12.612 +06:00 [INF] HTTP GET /Inventory/StockIn responded 200 in 19.4300 ms
+2025-12-16 22:56:22.830 +06:00 [INF] HTTP GET /Inventory/StockSearch responded 200 in 16.8074 ms
+2025-12-16 22:56:24.901 +06:00 [INF] HTTP GET /Inventory/StockIn responded 200 in 24.0533 ms
+2025-12-16 22:56:29.891 +06:00 [INF] HTTP GET /Settings/ModelInfo responded 200 in 53.4902 ms
+2025-12-16 22:56:32.153 +06:00 [INF] HTTP POST /Settings/modelinfo responded 200 in 535.1289 ms
+2025-12-16 22:56:35.062 +06:00 [INF] HTTP POST /Settings/modelinfo responded 200 in 69.9943 ms
+2025-12-16 22:56:35.080 +06:00 [INF] HTTP GET /barcodes/002002.png responded 200 in 4.9884 ms
+2025-12-16 22:56:37.928 +06:00 [INF] D:\NESHOP3.2\NESHOP\wwwroot\barcodes\002002.png
+2025-12-16 22:56:37.938 +06:00 [INF] HTTP GET /Reports/Rpt_BarcodeDownload/002002 responded 200 in 22.8110 ms
+2025-12-16 22:57:06.169 +06:00 [INF] HTTP GET /Admin/Logout responded 302 in 0.3942 ms
+2025-12-16 22:57:06.178 +06:00 [INF] HTTP GET / responded 200 in 0.9275 ms
+2025-12-16 22:58:10.319 +06:00 [INF] HTTP GET / responded 200 in 1.2847 ms
+2025-12-16 22:58:11.898 +06:00 [INF] HTTP GET / responded 200 in 0.9296 ms
+2025-12-16 22:58:12.248 +06:00 [INF] HTTP GET / responded 200 in 0.6166 ms
+2025-12-16 22:58:12.429 +06:00 [INF] HTTP GET / responded 200 in 1.6539 ms
+2025-12-16 22:58:25.172 +06:00 [INF] HTTP GET / responded 200 in 0.7720 ms
+2025-12-16 22:58:26.067 +06:00 [INF] HTTP GET / responded 200 in 0.5864 ms
+2025-12-16 22:59:26.540 +06:00 [INF] HTTP GET / responded 200 in 0.8592 ms
+2025-12-16 22:59:30.369 +06:00 [INF] Application is shutting down...
+2025-12-16 22:59:30.378 +06:00 [INF] Shut down complete
+2025-12-16 22:59:54.331 +06:00 [INF] Now listening on: http://localhost:5173
+2025-12-16 22:59:54.360 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-16 22:59:54.363 +06:00 [INF] Hosting environment: Development
+2025-12-16 22:59:54.365 +06:00 [INF] Content root path: D:\NESHOP3.2\NESHOP
+2025-12-16 22:59:56.266 +06:00 [WRN] Failed to determine the https port for redirect.
+2025-12-16 22:59:56.610 +06:00 [INF] HTTP GET / responded 200 in 344.5083 ms
+2025-12-16 23:00:26.528 +06:00 [INF] HTTP GET / responded 200 in 8.2415 ms
+2025-12-16 23:00:30.767 +06:00 [INF] Application is shutting down...
+2025-12-16 23:00:30.776 +06:00 [INF] Shut down complete
+2025-12-16 23:00:43.948 +06:00 [INF] Now listening on: http://localhost:5173
+2025-12-16 23:00:43.971 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-16 23:00:43.974 +06:00 [INF] Hosting environment: Development
+2025-12-16 23:00:43.976 +06:00 [INF] Content root path: D:\NESHOP3.2\NESHOP
+2025-12-16 23:00:46.591 +06:00 [WRN] Failed to determine the https port for redirect.
+2025-12-16 23:00:46.777 +06:00 [INF] HTTP GET / responded 200 in 187.8908 ms
+2025-12-16 23:00:48.686 +06:00 [INF] HTTP GET / responded 200 in 9.0655 ms
+2025-12-16 23:00:51.853 +06:00 [INF] HTTP GET / responded 200 in 3.8690 ms
+2025-12-16 23:31:44.631 +06:00 [INF] Now listening on: http://localhost:5173
+2025-12-16 23:31:44.690 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-16 23:31:44.693 +06:00 [INF] Hosting environment: Development
+2025-12-16 23:31:44.695 +06:00 [INF] Content root path: D:\NESHOP3.2\NESHOP
+2025-12-16 23:31:45.516 +06:00 [WRN] Failed to determine the https port for redirect.
+2025-12-16 23:31:47.424 +06:00 [INF] HTTP GET / responded 200 in 1907.3324 ms
+2025-12-16 23:32:16.388 +06:00 [INF] HTTP GET / responded 200 in 15.2893 ms
+2025-12-16 23:32:30.175 +06:00 [INF] HTTP GET / responded 200 in 84.6764 ms
+2025-12-16 23:33:04.656 +06:00 [INF] HTTP GET / responded 200 in 48.2450 ms
+2025-12-16 23:35:39.706 +06:00 [INF] Now listening on: http://localhost:5173
+2025-12-16 23:35:39.769 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-16 23:35:39.771 +06:00 [INF] Hosting environment: Development
+2025-12-16 23:35:39.772 +06:00 [INF] Content root path: D:\NESHOP3.2\NESHOP
+2025-12-16 23:35:40.855 +06:00 [WRN] Failed to determine the https port for redirect.
+2025-12-16 23:35:41.274 +06:00 [INF] HTTP GET / responded 200 in 422.2309 ms
+2025-12-16 23:35:41.308 +06:00 [INF] HTTP GET /css/site.css responded 200 in 17.2403 ms
+2025-12-16 23:36:09.378 +06:00 [INF] Hello Welcome 
+2025-12-16 23:36:10.132 +06:00 [INF] HTTP POST / responded 302 in 791.0000 ms
+2025-12-16 23:36:10.319 +06:00 [INF] HTTP GET /Home/Index responded 200 in 174.8179 ms
+2025-12-16 23:36:10.361 +06:00 [INF] HTTP GET /css/custom.css responded 404 in 4.7502 ms
+2025-12-16 23:37:02.429 +06:00 [INF] HTTP GET /Home/Index responded 200 in 28.0161 ms
+2025-12-16 23:37:02.446 +06:00 [INF] HTTP GET /css/custom.css responded 404 in 0.7672 ms
+2025-12-16 23:37:02.586 +06:00 [INF] HTTP GET /Home/Index responded 200 in 14.9115 ms
+2025-12-16 23:37:02.610 +06:00 [INF] HTTP GET /css/custom.css responded 404 in 0.5307 ms
+2025-12-16 23:37:02.758 +06:00 [INF] HTTP GET /Home/Index responded 200 in 13.9736 ms
+2025-12-16 23:37:02.779 +06:00 [INF] HTTP GET /css/custom.css responded 404 in 0.5198 ms
+2025-12-16 23:37:02.926 +06:00 [INF] HTTP GET /Home/Index responded 200 in 16.3109 ms
+2025-12-16 23:37:02.946 +06:00 [INF] HTTP GET /css/custom.css responded 404 in 0.8447 ms
+2025-12-16 23:53:17.408 +06:00 [INF] HTTP GET /Home/Index responded 200 in 84.6739 ms
+2025-12-16 23:53:17.467 +06:00 [INF] HTTP GET /css/custom.css responded 404 in 3.4286 ms
+2025-12-16 23:57:26.001 +06:00 [INF] HTTP GET /Home/Index responded 200 in 75.4304 ms
+2025-12-16 23:57:26.031 +06:00 [INF] HTTP GET /css/custom.css responded 404 in 3.5740 ms
